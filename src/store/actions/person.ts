@@ -1,12 +1,20 @@
-import { PersonAction, PersonActionTypes } from "../../types/person";
 import { Dispatch } from "redux";
-import { types } from "sass";
-import Error = types.Error;
+
+import axios from "axios";
+
+import { PersonAction, PersonActionTypes } from "../../types/person";
 
 export const getPersons = () => {
   return async (dispatch: Dispatch<PersonAction>) => {
     try {
       dispatch({ type: PersonActionTypes.GET_PERSONS });
+
+      const response = await axios.get("http://localhost:3000/persons");
+
+      dispatch({
+        type: PersonActionTypes.GET_PERSONS_SUCCESS,
+        payload: response.data,
+      });
     } catch (e: unknown) {
       if (typeof e === "string") {
         dispatch({
@@ -18,7 +26,7 @@ export const getPersons = () => {
       if (e instanceof Error) {
         dispatch({
           type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e.toString(),
+          payload: e.message,
         });
       }
     }

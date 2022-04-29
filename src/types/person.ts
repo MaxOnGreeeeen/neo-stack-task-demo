@@ -22,6 +22,7 @@ export interface GetPersonsError {
 
 export interface GetPersonSuccess {
   type: PersonActionTypes.GET_PERSONS_SUCCESS;
+  payload: [];
 }
 
 export interface EditPerson {

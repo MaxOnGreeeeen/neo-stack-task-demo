@@ -16,13 +16,13 @@ export const personReducer = (
 ): PersonState => {
   switch (action.type) {
     case PersonActionTypes.GET_PERSONS:
-      return { loading: true, error: "sdfsdf", persons: [] };
-
-    case PersonActionTypes.EDIT_PERSON:
-      return { loading: true, error: "sdfsdf", persons: [] };
+      return { loading: true, error: "", persons: [] };
 
     case PersonActionTypes.GET_PERSONS_SUCCESS:
-      return { loading: true, error: "sdfsdf", persons: [] };
+      return { loading: true, error: "", persons: action.payload };
+
+    case PersonActionTypes.EDIT_PERSON:
+      return { loading: true, error: "", persons: [] };
 
     case PersonActionTypes.GET_PERSONS_ERROR:
       return { loading: true, error: "sdfsdf", persons: [] };
