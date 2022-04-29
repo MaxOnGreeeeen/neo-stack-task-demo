@@ -9,7 +9,7 @@ export const getPersons = () => {
     try {
       dispatch({ type: PersonActionTypes.GET_PERSONS });
 
-      const response = await axios.get("http://localhost:3000/persons");
+      const response = await axios.get("http://localhost:5000/api/v1/persons");
 
       dispatch({
         type: PersonActionTypes.GET_PERSONS_SUCCESS,
