@@ -1,10 +1,42 @@
+@import "../../theme";
+@import "../../sizes";
+
 .body {
-  font-weight: 600;
+  @extend %justify-center;
 }
 
 .mainBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
+  @extend %justify-column;
+  @extend %main-block-reset;
+}
+
+.titleForCards {
+  width: 100%;
+  margin-bottom: 2em;
+  .titleBlock {
+    margin-bottom: 2em;
+    width: 100%;
+    text-align: start;
+  }
+
+  .theadInfo {
+    display: flex;
+    width: 100%;
+    padding: 10px 20px;
+
+    h2 {
+      text-align: start;
+      font-weight: 600;
+      &:nth-child(1) {
+        width: 10%;
+      }
+      &:nth-child(2) {
+        width: 35%;
+      }
+      &:nth-child(3) {
+        width: 35%;
+      }
+    }
+  }
 }

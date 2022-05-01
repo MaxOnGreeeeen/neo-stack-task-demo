@@ -12,6 +12,7 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   return (
     <div className={classes.mainPersonBlock}>
       <div className={classes.personInfoBlock}>
+        <h2>{person.id}</h2>
         <h2>{person.name}</h2>
         <h2>{person.lastName}</h2>
       </div>

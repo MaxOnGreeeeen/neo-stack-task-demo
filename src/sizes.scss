@@ -1,0 +1,48 @@
+@import "theme";
+
+$block-border-radius: 4px;
+$button-border-radius: 4px;
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Montserrat-Medium";
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+h4 {
+  font-size: 12px;
+}
+
+%justify-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%justify-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+%main-block-reset {
+  width: 100%;
+  border-radius: $block-border-radius;
+  background-color: $block-bg-color;
+  max-width: 1280px;
+  padding: 60px;
+}
+
