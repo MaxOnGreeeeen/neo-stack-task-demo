@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 
 import axios from "axios";
 
-import { PersonAction, PersonActionTypes } from "../../types/person";
+import { Person, PersonAction, PersonActionTypes } from "../../types/person";
 
 export const getPersons = () => {
   return async (dispatch: Dispatch<PersonAction>) => {
@@ -11,9 +11,11 @@ export const getPersons = () => {
 
       const response = await axios.get("http://localhost:5000/api/v1/persons");
 
+      const users: Person[] = response.data;
+
       dispatch({
         type: PersonActionTypes.GET_PERSONS_SUCCESS,
-        payload: response.data,
+        payload: users,
       });
     } catch (e: unknown) {
       if (typeof e === "string") {

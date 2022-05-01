@@ -1,9 +1,13 @@
 export interface PersonState {
-  persons: any[];
+  persons: Person[] | any[];
   loading: boolean;
   error: null | string;
 }
-
+export interface Person {
+  id: number;
+  name: string;
+  lastName: string;
+}
 export enum PersonActionTypes {
   GET_PERSONS = "GET_ALL_PERSONS",
   GET_PERSONS_ERROR = "GET_PERSONS_ERROR",
@@ -22,7 +26,7 @@ export interface GetPersonsError {
 
 export interface GetPersonSuccess {
   type: PersonActionTypes.GET_PERSONS_SUCCESS;
-  payload: [];
+  payload: Person[];
 }
 
 export interface EditPerson {

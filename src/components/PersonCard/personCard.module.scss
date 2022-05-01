@@ -1,0 +1,12 @@
+.mainPersonBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .personInfoBlock {
+    h2 {
+      font-size: 20px;
+    }
+  }
+}

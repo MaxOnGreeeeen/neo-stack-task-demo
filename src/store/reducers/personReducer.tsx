@@ -25,7 +25,7 @@ export const personReducer = (
       return { loading: true, error: "", persons: [] };
 
     case PersonActionTypes.GET_PERSONS_ERROR:
-      return { loading: true, error: "sdfsdf", persons: [] };
+      return { loading: true, error: action.payload, persons: [] };
 
     default:
       return state;
