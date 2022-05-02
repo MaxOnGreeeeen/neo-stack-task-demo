@@ -14,6 +14,8 @@ const PersonsList: React.FC = () => {
     (state) => state.persons
   );
 
+  const handleCreatePerson = () => {};
+
   const { getPersons } = useActions();
 
   useEffect(() => {

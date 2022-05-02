@@ -9,6 +9,10 @@ interface PersonCardProps {
 }
 
 const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
+  const handleEditPersonButton = () => {};
+
+  const handleDeletePersonButton = () => {};
+
   return (
     <div className={classes.mainPersonBlock}>
       <div className={classes.personInfoBlock}>

@@ -4,7 +4,7 @@ export interface PersonState {
   error: null | string;
 }
 export interface Person {
-  id: number;
+  id: number | null;
   name: string;
   lastName: string;
 }
@@ -13,6 +13,9 @@ export enum PersonActionTypes {
   GET_PERSONS_ERROR = "GET_PERSONS_ERROR",
   GET_PERSONS_SUCCESS = "GET_PERSONS_SUCCESS",
   EDIT_PERSON = "EDIT_PERSON",
+  CREATE_PERSON = "CREATE_PERSON",
+  DELETE_PERSON = "DELETE_PERSON",
+  SET_LOADING = "SET_LOADING",
 }
 
 export interface GetPersons {
@@ -31,10 +34,29 @@ export interface GetPersonSuccess {
 
 export interface EditPerson {
   type: PersonActionTypes.EDIT_PERSON;
+  payload: Person;
+}
+
+export interface CreatePerson {
+  type: PersonActionTypes.CREATE_PERSON;
+  payload: Person;
+}
+
+export interface DeletePerson {
+  type: PersonActionTypes.DELETE_PERSON;
+  payload: number;
+}
+
+export interface SetLoading {
+  type: PersonActionTypes.SET_LOADING;
+  payload: boolean;
 }
 
 export type PersonAction =
   | GetPersons
   | EditPerson
   | GetPersonsError
-  | GetPersonSuccess;
+  | GetPersonSuccess
+  | CreatePerson
+  | DeletePerson
+  | SetLoading;
