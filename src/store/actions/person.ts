@@ -4,12 +4,17 @@ import axios from "axios";
 
 import { Person, PersonAction, PersonActionTypes } from "../../types/person";
 
-export const getPersons = () => {
+export const getPersons = (page: number, limit: number) => {
   return async (dispatch: Dispatch<PersonAction>) => {
     try {
       dispatch({ type: PersonActionTypes.GET_PERSONS });
 
-      const response = await axios.get("http://localhost:5000/api/v1/persons");
+      const response = await axios.get("http://localhost:5000/api/v1/persons", {
+        params: {
+          _limit: limit,
+          _page: page,
+        },
+      });
 
       const users: Person[] = response.data;
 
@@ -33,6 +38,10 @@ export const getPersons = () => {
       }
     }
   };
+};
+
+export const setPersonsPage = (page: number): PersonAction => {
+  return { type: PersonActionTypes.SET_PERSONS_PAGE, payload: page };
 };
 
 export const editPerson = (person: Person) => {

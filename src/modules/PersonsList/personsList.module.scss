@@ -7,6 +7,7 @@
 
 .mainBlock {
   width: 100%;
+  position: relative;
   @extend %justify-column;
   @extend %main-block-reset;
 }
@@ -37,6 +38,28 @@
       &:nth-child(3) {
         width: 35%;
       }
+    }
+  }
+}
+
+.paginationBlock {
+  display: flex;
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+
+  & > span {
+    width: 40px;
+    height: 40px;
+
+    background-color: aquamarine;
+    border-radius: $button-border-radius;
+    border: 1px black solid;
+    @extend %justify-center;
+
+    cursor: pointer;
+    &:not(:last-child) {
+      margin-right: 10px;
     }
   }
 }

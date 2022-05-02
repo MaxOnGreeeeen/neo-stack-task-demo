@@ -8,6 +8,8 @@ const initialState: PersonState = {
   persons: [],
   loading: false,
   error: null,
+  page: 1,
+  limit: 10,
 };
 
 export const personReducer = (
@@ -16,13 +18,18 @@ export const personReducer = (
 ): PersonState => {
   switch (action.type) {
     case PersonActionTypes.GET_PERSONS:
-      return { loading: true, error: "", persons: [] };
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        persons: [],
+      };
 
     case PersonActionTypes.GET_PERSONS_SUCCESS:
-      return { loading: true, error: "", persons: action.payload };
+      return { ...state, loading: true, error: "", persons: action.payload };
 
     case PersonActionTypes.GET_PERSONS_ERROR:
-      return { loading: true, error: action.payload, persons: [] };
+      return { ...state, loading: true, error: action.payload, persons: [] };
 
     case PersonActionTypes.CREATE_PERSON:
       return {
@@ -53,6 +60,12 @@ export const personReducer = (
             return action.payload;
           }
         }),
+      };
+
+    case PersonActionTypes.SET_PERSONS_PAGE:
+      return {
+        ...state,
+        page: action.payload,
       };
     default:
       return state;

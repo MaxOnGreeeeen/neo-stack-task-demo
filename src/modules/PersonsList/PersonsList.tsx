@@ -5,22 +5,28 @@ import { useActions } from "../../hooks/useActions";
 
 import PersonCard from "../../components/PersonCard";
 
-import { getPersons } from "../../store/actions/person";
+import { getPersons, setPersonsPage } from "../../store/actions/person";
 
 import classes from "./personsList.module.scss";
 
 const PersonsList: React.FC = () => {
-  const { persons, error, loading } = useTypedSelector(
+  const { persons, error, loading, page, limit } = useTypedSelector(
     (state) => state.persons
   );
 
+  const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   const handleCreatePerson = () => {};
 
-  const { getPersons } = useActions();
+  const handlePageClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setPersonsPage(Number(e.currentTarget.textContent));
+  };
+
+  const { getPersons, setPersonsPage } = useActions();
 
   useEffect(() => {
-    getPersons();
-  }, []);
+    getPersons(page, limit);
+  }, [page]);
 
   return (
     <div className={classes.mainBlock}>
@@ -39,6 +45,11 @@ const PersonsList: React.FC = () => {
       {persons.map((person, number) => {
         return <PersonCard key={number} person={person} />;
       })}
+      <div className={classes.paginationBlock}>
+        {pages.map((page) => {
+          return <span onClick={handlePageClick}>{page}</span>;
+        })}
+      </div>
     </div>
   );
 };

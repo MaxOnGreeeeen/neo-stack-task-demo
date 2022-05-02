@@ -2,6 +2,8 @@ export interface PersonState {
   persons: Person[] | any[];
   loading: boolean;
   error: null | string;
+  page: number;
+  limit: number;
 }
 export interface Person {
   id: number | null;
@@ -16,6 +18,7 @@ export enum PersonActionTypes {
   CREATE_PERSON = "CREATE_PERSON",
   DELETE_PERSON = "DELETE_PERSON",
   SET_LOADING = "SET_LOADING",
+  SET_PERSONS_PAGE = "SET_PERSONS_PAGE",
 }
 
 export interface GetPersons {
@@ -52,6 +55,10 @@ export interface SetLoading {
   payload: boolean;
 }
 
+export interface SetPersonsPage {
+  type: PersonActionTypes.SET_PERSONS_PAGE;
+  payload: number;
+}
 export type PersonAction =
   | GetPersons
   | EditPerson
@@ -59,4 +66,5 @@ export type PersonAction =
   | GetPersonSuccess
   | CreatePerson
   | DeletePerson
-  | SetLoading;
+  | SetLoading
+  | SetPersonsPage;
