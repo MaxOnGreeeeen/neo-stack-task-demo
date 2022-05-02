@@ -5,6 +5,7 @@ import classes from "./button.module.scss";
 export enum ButtonVariant {
   pagination = "pagination",
   default = "default",
+  rounded = "rounded",
 }
 
 interface ButtonProps {
@@ -24,11 +25,15 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       className={
-        variant === ButtonVariant.default
-          ? classes.buttonDefault
-          : `${classes.buttonDefault} ${classes.paginateButton}`
+        variant === ButtonVariant.pagination
+          ? `${classes.buttonDefault} ${classes.paginateButton}`
+          : classes.buttonDefault
       }
-      style={{ border: active ? "1px solid green" : "inherit" }}
+      style={{
+        border: active ? "1px solid green" : "inherit",
+        borderRadius: variant === ButtonVariant.rounded ? "50%" : "",
+        backgroundColor: variant === ButtonVariant.rounded ? "none" : "#e0e0e0",
+      }}
     >
       {children}
     </button>

@@ -9,11 +9,15 @@ import Button, { ButtonVariant } from "../../UI kit/button/button";
 
 import classes from "./personsList.module.scss";
 import { Person } from "../../types/person";
+import { Dialog } from "../../components";
+import CreatePersonForm from "../../components/CreatePersonForm";
 
 const PersonsList: React.FC = () => {
   const { persons, error, loading, page, limit, pages } = useTypedSelector(
     (state) => state.persons
   );
+
+  const { active } = useTypedSelector((state) => state.form);
 
   useEffect(() => {
     getPersons(page, limit);
@@ -25,17 +29,26 @@ const PersonsList: React.FC = () => {
     setPersonsPage(Number(e.currentTarget.textContent));
   };
 
-  const { getPersons, setPersonsPage, deletePerson } = useActions();
+  const { getPersons, setPersonsPage, deletePerson, setModalVisibility } =
+    useActions();
 
   const checkActivePage = (pageNumber: string | number) => {
     return Number(pageNumber) === page;
   };
 
-  const handleEditPerson = (person: Person) => {};
+  const handleEditPerson = (person: Person) => {
+    setModalVisibility(true);
+  };
 
   const handleDeletePerson = (person: Person) => {
     deletePerson(Number(person.id));
   };
+
+  const onModalClose = () => {
+    setModalVisibility(false);
+  };
+
+  const submitCreatePersonForm = () => {};
 
   return (
     <div className={classes.mainBlock}>
@@ -51,11 +64,16 @@ const PersonsList: React.FC = () => {
         </div>
         <hr></hr>
       </div>
+
+      <Dialog active={active} onClose={onModalClose}>
+        <CreatePersonForm submitForm={submitCreatePersonForm} />
+      </Dialog>
+
       {persons.map((person, number) => {
         return (
           <PersonCard
             deleteHandler={handleDeletePerson}
-            editHandler={handleDeletePerson}
+            editHandler={handleEditPerson}
             key={number}
             person={person}
           />

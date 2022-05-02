@@ -7,7 +7,7 @@
   padding: 5px 10px;
 
   background-color: aquamarine;
-  border-radius: $button-border-radius;
+  border-radius: $button-border-radius !important;
   border: 1px black solid;
 
   cursor: pointer;

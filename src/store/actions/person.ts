@@ -1,4 +1,4 @@
-import { Dispatch } from "redux";
+import { ActionCreator, Dispatch } from "redux";
 
 import axios from "axios";
 
