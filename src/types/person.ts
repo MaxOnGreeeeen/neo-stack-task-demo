@@ -4,6 +4,7 @@ export interface PersonState {
   error: null | string;
   page: number;
   limit: number;
+  pages: number[];
 }
 export interface Person {
   id: number | null;

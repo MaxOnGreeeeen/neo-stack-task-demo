@@ -1,0 +1,23 @@
+@import "../../sizes";
+@import "../../theme";
+
+.buttonDefault {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 5px 10px;
+
+  background-color: aquamarine;
+  border-radius: $button-border-radius;
+  border: 1px black solid;
+
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  &.paginateButton {
+    border: 1px solid #0000002e;
+    background-color: #e0e0e0;
+
+    font-weight: 300;
+  }
+}

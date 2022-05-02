@@ -10,6 +10,7 @@ const initialState: PersonState = {
   error: null,
   page: 1,
   limit: 10,
+  pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 };
 
 export const personReducer = (

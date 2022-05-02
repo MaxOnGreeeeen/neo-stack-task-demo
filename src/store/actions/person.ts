@@ -120,7 +120,7 @@ export const deletePerson = (id: number) => {
       setLoading(true);
 
       const response = await axios.delete(
-        `http://localhost:5000/api/v1/person/:${id}`
+        `http://localhost:5000/api/v1/person/${id}`
       );
 
       dispatch({
