@@ -8,8 +8,11 @@
 .mainBlock {
   width: 100%;
   position: relative;
+
   @extend %justify-column;
   @extend %main-block-reset;
+  margin: 50px;
+  padding-bottom: 100px;
 }
 
 .titleForCards {
@@ -19,6 +22,8 @@
     margin-bottom: 2em;
     width: 100%;
     text-align: start;
+    display: flex;
+    justify-content: space-between;
   }
 
   .theadInfo {
@@ -40,13 +45,18 @@
       }
     }
   }
+  & > div {
+    &:is(:last-child) {
+      margin-bottom: 50px;
+    }
+  }
 }
 
 .paginationBlock {
   display: flex;
   width: 100%;
   position: absolute;
-  bottom: 10px;
+  bottom: 24px;
 
   & > button {
     &:not(:last-child) {

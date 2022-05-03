@@ -22,8 +22,7 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
 }) => {
   const { name, lastName, disabled } = useTypedSelector((state) => state.form);
 
-  const { editPersonName, editPersonLastname} =
-    useActions();
+  const { editPersonName, editPersonLastname } = useActions();
 
   const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [lastNameErrorMessage, setLastNameErrorMessage] = useState<string>("");
@@ -51,7 +50,7 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
 
   return (
     <form className={classes.mainForm}>
-      <label>Введите имя сотрудника</label>
+      <label className={classes.labelInput}>Введите имя сотрудника</label>
       <Input
         value={name}
         onChange={onChangeNameFieldHandler}
@@ -59,7 +58,7 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
         error={errorNameMessageCheck}
         errorMessage={nameErrorMessage}
       />
-      <label>Введите фамилию сотрудника</label>
+      <label className={classes.labelInput}>Введите фамилию сотрудника</label>
       <Input
         onChange={onChangeLastnameFieldHandler}
         placeHolder={"Фамилия сотрудника"}
@@ -67,7 +66,7 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
         errorMessage={lastNameErrorMessage}
         value={lastName}
       />
-      <Button onClick={submitForm} variant={ButtonVariant.default}>
+      <Button onClick={submitForm} variant={ButtonVariant.submit}>
         {buttonTitle}
       </Button>
     </form>

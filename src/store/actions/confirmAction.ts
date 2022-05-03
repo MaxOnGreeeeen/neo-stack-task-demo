@@ -8,9 +8,33 @@ export const setMessage = (message: string) => {
   };
 };
 
-export const confirmAction = () => {
+export const confirmCreateAction = () => {
   return (dispatch: Dispatch<ConfirmActions>) => {
-    dispatch({ type: ConfirmActionTypes.CONFIRM_ACTION });
+    dispatch({ type: ConfirmActionTypes.CONFIRM_CREATE_ACTION });
+  };
+};
+
+export const confirmEditAction = () => {
+  return (dispatch: Dispatch<ConfirmActions>) => {
+    dispatch({ type: ConfirmActionTypes.CONFIRM_EDIT_ACTION });
+  };
+};
+
+export const setEditDialogVisible = (active: boolean) => {
+  return (dispatch: Dispatch<ConfirmActions>) => {
+    dispatch({
+      type: ConfirmActionTypes.SET_EDIT_DIALOG_VISIBLE,
+      payload: active,
+    });
+  };
+};
+
+export const setCreateDialogVisible = (active: boolean) => {
+  return (dispatch: Dispatch<ConfirmActions>) => {
+    dispatch({
+      type: ConfirmActionTypes.SET_CREATE_DIALOG_VISIBLE,
+      payload: active,
+    });
   };
 };
 

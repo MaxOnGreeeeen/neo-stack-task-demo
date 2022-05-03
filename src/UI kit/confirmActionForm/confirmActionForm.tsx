@@ -1,8 +1,9 @@
 import React from "react";
 
-import classes from "./confirmActionForm.module.scss";
 import Button from "../button";
 import { ButtonVariant } from "../button/button";
+
+import classes from "./confirmActionForm.module.scss";
 
 interface ConfirmFormProps {
   message: string;
@@ -19,7 +20,7 @@ const ConfirmActionForm: React.FC<ConfirmFormProps> = ({
     <div className={classes.confirmActionBlock}>
       <span className={classes.confirmMessage}>{message}</span>
       <div className={classes.buttonsBlock}>
-        <Button onClick={onConfirm} variant={ButtonVariant.default}>
+        <Button onClick={onConfirm} variant={ButtonVariant.submit}>
           {"Да"}
         </Button>
         <Button onClick={onClose} variant={ButtonVariant.default}>

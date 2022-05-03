@@ -1,7 +1,8 @@
 import { Person } from "./person";
 
 export interface FormState {
-  active: boolean;
+  activeEdit: boolean;
+  activeCreate: boolean;
   person?: Person;
   id: number | null;
   name: string;
@@ -17,8 +18,10 @@ export enum FormActionType {
   EDIT_PERSON_CONFIRM = "EDIT_PERSON_CONFIRM",
   SET_NAME_INPUT_ERROR = "SET_NAME_INPUT_ERROR",
   SET_LASTNAME_INPUT_ERROR = "SET_LASTNAME_INPUT_ERROR",
-  SET_MODAL_ACTIVE = "SET_MODAL_ACTIVE",
+  SET_MODAL_EDIT_ACTIVE = "SET_MODAL_EDIT_ACTIVE",
+  SET_MODAL_CREATE_ACTIVE = "SET_MODAL_CREATE_ACTIVE",
   SET_PERSON_EDIT = "SET_PERSON_EDIT",
+  CLEAR_FORM_DATA = "CLEAR_FORM_DATA",
 }
 
 export interface CreatePerson {
@@ -51,8 +54,13 @@ export interface SetLastnameInputError {
   type: FormActionType.SET_LASTNAME_INPUT_ERROR;
 }
 
-export interface ModalManageVisibility {
-  type: FormActionType.SET_MODAL_ACTIVE;
+export interface ModalManageVisibilityEdit {
+  type: FormActionType.SET_MODAL_EDIT_ACTIVE;
+  payload: boolean;
+}
+
+export interface ModalManageVisibilityCreate {
+  type: FormActionType.SET_MODAL_CREATE_ACTIVE;
   payload: boolean;
 }
 
@@ -61,8 +69,13 @@ export interface SetPersonEdit {
   payload: Person;
 }
 
+export interface ClearFormData {
+  type: FormActionType.CLEAR_FORM_DATA;
+}
+
 export type FormActions =
-  | ModalManageVisibility
+  | ModalManageVisibilityCreate
+  | ModalManageVisibilityEdit
   | CreatePersonConfirm
   | EditPersonLastname
   | CreatePerson
@@ -70,4 +83,5 @@ export type FormActions =
   | EditPersonConfirm
   | SetLastnameInputError
   | SetNameInputError
-  | SetPersonEdit;
+  | SetPersonEdit
+  | ClearFormData;

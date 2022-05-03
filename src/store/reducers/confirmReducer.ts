@@ -5,7 +5,8 @@ import {
 } from "../../types/confirm";
 
 const initialState: ConfirmState = {
-  active: false,
+  activeEditDialog: false,
+  activeCreateDialog: false,
   message: "",
 };
 
@@ -18,20 +19,38 @@ export const confirmReducer = (
       return {
         ...state,
         message: action.payload,
-        active: true,
       };
 
-    case ConfirmActionTypes.CONFIRM_ACTION:
+    case ConfirmActionTypes.CONFIRM_EDIT_ACTION:
       return {
         ...state,
-        active: false,
+        activeEditDialog: false,
         message: "",
+      };
+    case ConfirmActionTypes.CONFIRM_CREATE_ACTION:
+      return {
+        ...state,
+        activeCreateDialog: false,
+        message: "",
+      };
+
+    case ConfirmActionTypes.SET_CREATE_DIALOG_VISIBLE:
+      return {
+        ...state,
+        activeEditDialog: action.payload,
+      };
+
+    case ConfirmActionTypes.SET_EDIT_DIALOG_VISIBLE:
+      return {
+        ...state,
+        activeCreateDialog: action.payload,
       };
 
     case ConfirmActionTypes.DISPROVE_ACTION:
       return {
         ...state,
-        active: false,
+        activeCreateDialog: false,
+        activeEditDialog: false,
         message: "",
       };
 

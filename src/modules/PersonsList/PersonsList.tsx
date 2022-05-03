@@ -2,49 +2,57 @@ import React, { useEffect } from "react";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
+
 import PersonCard from "../../components/PersonCard";
+import CreateEditPersonForm from "../../components/CreatePersonForm";
+import { Dialog } from "../../components";
+
+import ConfirmActionForm from "../../UI kit/confirmActionForm";
 import Button, { ButtonVariant } from "../../UI kit/button/button";
 
-import classes from "./personsList.module.scss";
 import { Person } from "../../types/person";
-import { Dialog } from "../../components";
-import CreateEditPersonForm from "../../components/CreatePersonForm";
-import ConfirmActionForm from "../../UI kit/confirmActionForm";
+
+import classes from "./personsList.module.scss";
+import { setModalVisibility } from "../../store/actions/formAction";
 
 const PersonsList: React.FC = () => {
+  const {
+    getPersons,
+    setPersonsPage,
+    createPerson,
+    deletePerson,
+    editPerson,
+    setModalVisibility,
+    setPersonEdit,
+    setMessage,
+    confirmCreateAction,
+    confirmEditAction,
+    setCreateDialogVisible,
+    setEditDialogVisible,
+    disproveAction,
+    clearFormData,
+  } = useActions();
+
   const { persons, error, loading, page, limit, pages } = useTypedSelector(
     (state) => state.persons
   );
 
-  const { message, active: activeDialog } = useTypedSelector(
+  const { message, activeCreateDialog, activeEditDialog } = useTypedSelector(
     (state) => state.confirm
   );
 
   const {
-    active,
+    activeEdit,
+    activeCreate,
     person: modalEditedPerson,
     name,
     lastName,
     id: personId,
   } = useTypedSelector((state) => state.form);
 
-  const {
-    getPersons,
-    setPersonsPage,
-    deletePerson,
-    editPerson,
-    setModalVisibility,
-    setPersonEdit,
-    setMessage,
-    confirmAction,
-    disproveAction,
-  } = useActions();
-
   useEffect(() => {
     getPersons(page, limit);
   }, [page]);
-
-  const handleCreatePerson = () => {};
 
   const handlePageClick = (e: React.MouseEvent) => {
     setPersonsPage(Number(e.currentTarget.textContent));
@@ -55,34 +63,46 @@ const PersonsList: React.FC = () => {
   };
 
   const handleEditPerson = (person: Person) => {
-    setModalVisibility(true);
+    setModalVisibility(true, "edit");
     setPersonEdit(person);
+  };
+
+  const handleCreatePerson = () => {
+    setModalVisibility(true, "create");
   };
 
   const handleDeletePerson = (person: Person) => {
     deletePerson(Number(person.id));
   };
 
-  const onModalClose = () => {
-    setModalVisibility(false);
+  const onModalCreateClose = () => {
+    setModalVisibility(false, "create");
+    clearFormData();
+  };
+
+  const onModalEditClose = () => {
+    setModalVisibility(false, "edit");
+    clearFormData();
   };
 
   const submitCreatePersonForm = (e: React.MouseEvent) => {
     e.preventDefault();
     setMessage("Подтвердить создание пользователя?");
+    setCreateDialogVisible(true);
   };
 
   const submitEditPersonForm = (e: React.MouseEvent) => {
     e.preventDefault();
     setMessage("Подтвердить сохранение изменений?");
+    setEditDialogVisible(true);
   };
 
   const handleExitEditing = () => {
     disproveAction();
   };
 
-  const handleConfirmAction = () => {
-    confirmAction();
+  const handleConfirmEdit = () => {
+    confirmEditAction();
 
     const editedPerson: Person = {
       id: personId,
@@ -90,8 +110,23 @@ const PersonsList: React.FC = () => {
       lastName: lastName,
     };
 
-    setModalVisibility(false);
+    setModalVisibility(false, "edit");
     editPerson(editedPerson);
+    clearFormData();
+  };
+
+  const handleConfirmCreating = () => {
+    confirmCreateAction();
+
+    const createdPerson: Person = {
+      id: null,
+      name: name,
+      lastName: lastName,
+    };
+
+    setModalVisibility(false, "create");
+    createPerson(createdPerson);
+    clearFormData();
   };
 
   return (
@@ -99,6 +134,31 @@ const PersonsList: React.FC = () => {
       <div className={classes.titleForCards}>
         <div className={classes.titleBlock}>
           <h1>Список сотрудников</h1>
+          <Dialog
+            active={activeCreateDialog}
+            onClose={handleExitEditing}
+            overwrite={true}
+          >
+            <ConfirmActionForm
+              message={message}
+              onConfirm={handleConfirmCreating}
+              onClose={handleExitEditing}
+            />
+          </Dialog>
+          <Dialog
+            active={activeCreate}
+            onClose={onModalCreateClose}
+            title={"Добавить сотрудника"}
+          >
+            <CreateEditPersonForm
+              buttonTitle={"сохранить"}
+              submitForm={submitCreatePersonForm}
+              confirmMessage={message}
+            />
+          </Dialog>
+          <Button onClick={handleCreatePerson} variant={ButtonVariant.submit}>
+            {"Добавить сотрудника"}
+          </Button>
         </div>
         <hr></hr>
         <div className={classes.theadInfo}>
@@ -109,19 +169,19 @@ const PersonsList: React.FC = () => {
         <hr></hr>
       </div>
       <Dialog
-        active={activeDialog}
+        active={activeEditDialog}
         onClose={handleExitEditing}
         overwrite={true}
       >
         <ConfirmActionForm
           message={message}
-          onConfirm={handleConfirmAction}
+          onConfirm={handleConfirmEdit}
           onClose={handleExitEditing}
         />
       </Dialog>
       <Dialog
-        active={active}
-        onClose={onModalClose}
+        active={activeEdit}
+        onClose={onModalEditClose}
         title={"Редактировать сотрудника"}
       >
         <CreateEditPersonForm

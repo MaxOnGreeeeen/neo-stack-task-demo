@@ -2,7 +2,8 @@ import { FormActionType, FormActions, FormState } from "../../types/form";
 import { Person } from "../../types/person";
 
 const initialState: FormState = {
-  active: false,
+  activeCreate: false,
+  activeEdit: false,
   person: undefined,
   id: 0,
   name: "",
@@ -35,10 +36,25 @@ export const formReducer = (
         lastName: action.payload,
       };
 
-    case FormActionType.SET_MODAL_ACTIVE:
+    case FormActionType.SET_MODAL_EDIT_ACTIVE:
       return {
         ...state,
-        active: action.payload,
+        activeEdit: action.payload,
+      };
+
+    case FormActionType.SET_MODAL_CREATE_ACTIVE:
+      return {
+        ...state,
+        activeCreate: action.payload,
+      };
+
+    case FormActionType.CLEAR_FORM_DATA:
+      return {
+        ...state,
+        person: undefined,
+        name: "",
+        lastName: "",
+        id: null,
       };
     default:
       return state;
