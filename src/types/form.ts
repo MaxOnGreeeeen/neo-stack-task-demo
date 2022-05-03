@@ -2,7 +2,8 @@ import { Person } from "./person";
 
 export interface FormState {
   active: boolean;
-  person: Person | undefined;
+  person?: Person;
+  id: number | null;
   name: string;
   lastName: string;
   disabled: boolean;

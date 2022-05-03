@@ -4,6 +4,7 @@ import { Person } from "../../types/person";
 const initialState: FormState = {
   active: false,
   person: undefined,
+  id: 0,
   name: "",
   lastName: "",
   disabled: true,
@@ -17,8 +18,10 @@ export const formReducer = (
     case FormActionType.SET_PERSON_EDIT:
       return {
         ...state,
+        id: action.payload.id,
         name: action.payload.name,
         lastName: action.payload.lastName,
+        person: action.payload,
       };
     case FormActionType.EDIT_PERSON_NAME:
       return {

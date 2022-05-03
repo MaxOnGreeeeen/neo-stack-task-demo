@@ -11,6 +11,7 @@ interface DialogProps {
   children: ReactNode | undefined;
   onClose: (e: React.MouseEvent) => void;
   title?: string;
+  overwrite?: boolean;
 }
 
 const Dialog: React.FC<DialogProps> = ({
@@ -18,6 +19,7 @@ const Dialog: React.FC<DialogProps> = ({
   children,
   onClose,
   title,
+  overwrite,
 }) => {
   const handleOnContentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -27,6 +29,7 @@ const Dialog: React.FC<DialogProps> = ({
     <div
       className={active ? `${classes.modal} ${classes.active}` : classes.modal}
       onClick={onClose}
+      style={{ zIndex: overwrite ? 1000 : 100 }}
     >
       <div
         className={

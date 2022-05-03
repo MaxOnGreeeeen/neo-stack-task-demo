@@ -9,17 +9,21 @@ import { useActions } from "../../hooks/useActions";
 import { Person } from "../../types/person";
 
 interface CreatePersonFormProps {
-  submitForm: () => void;
+  submitForm: (e: React.MouseEvent) => void;
   person?: Person;
   confirmMessage: string;
+  buttonTitle: string;
 }
 const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
   submitForm,
   person,
+  buttonTitle,
+  confirmMessage,
 }) => {
   const { name, lastName, disabled } = useTypedSelector((state) => state.form);
 
-  const { editPersonName, editPersonLastname } = useActions();
+  const { editPersonName, editPersonLastname} =
+    useActions();
 
   const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [lastNameErrorMessage, setLastNameErrorMessage] = useState<string>("");
@@ -64,7 +68,7 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
         value={lastName}
       />
       <Button onClick={submitForm} variant={ButtonVariant.default}>
-        {"Создать сотрудника"}
+        {buttonTitle}
       </Button>
     </form>
   );
