@@ -26,6 +26,7 @@ const Dialog: React.FC<DialogProps> = ({
   return (
     <div
       className={active ? `${classes.modal} ${classes.active}` : classes.modal}
+      onClick={onClose}
     >
       <div
         className={
@@ -36,7 +37,7 @@ const Dialog: React.FC<DialogProps> = ({
         onClick={handleOnContentClick}
       >
         <div className={classes.modalHeader}>
-          <h1>{title}</h1>
+          <h2>{title}</h2>
           <Button onClick={onClose} variant={ButtonVariant.rounded}>
             <img src={closeIcon} />
           </Button>

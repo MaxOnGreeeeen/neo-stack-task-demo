@@ -10,7 +10,7 @@ import Button, { ButtonVariant } from "../../UI kit/button/button";
 import classes from "./personsList.module.scss";
 import { Person } from "../../types/person";
 import { Dialog } from "../../components";
-import CreatePersonForm from "../../components/CreatePersonForm";
+import CreateEditPersonForm from "../../components/CreatePersonForm";
 
 const PersonsList: React.FC = () => {
   const { persons, error, loading, page, limit, pages } = useTypedSelector(
@@ -18,6 +18,14 @@ const PersonsList: React.FC = () => {
   );
 
   const { active } = useTypedSelector((state) => state.form);
+
+  const {
+    getPersons,
+    setPersonsPage,
+    deletePerson,
+    setModalVisibility,
+    setPersonEdit,
+  } = useActions();
 
   useEffect(() => {
     getPersons(page, limit);
@@ -29,15 +37,13 @@ const PersonsList: React.FC = () => {
     setPersonsPage(Number(e.currentTarget.textContent));
   };
 
-  const { getPersons, setPersonsPage, deletePerson, setModalVisibility } =
-    useActions();
-
   const checkActivePage = (pageNumber: string | number) => {
     return Number(pageNumber) === page;
   };
 
   const handleEditPerson = (person: Person) => {
     setModalVisibility(true);
+    setPersonEdit(person);
   };
 
   const handleDeletePerson = (person: Person) => {
@@ -65,8 +71,15 @@ const PersonsList: React.FC = () => {
         <hr></hr>
       </div>
 
-      <Dialog active={active} onClose={onModalClose}>
-        <CreatePersonForm submitForm={submitCreatePersonForm} />
+      <Dialog
+        active={active}
+        onClose={onModalClose}
+        title={"Редактировать сотрудника"}
+      >
+        <CreateEditPersonForm
+          submitForm={submitCreatePersonForm}
+          confirmMessage={"Подтвердить сохранение изменений?"}
+        />
       </Dialog>
 
       {persons.map((person, number) => {

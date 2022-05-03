@@ -14,6 +14,12 @@ export const formReducer = (
   action: FormActions
 ): FormState => {
   switch (action.type) {
+    case FormActionType.SET_PERSON_EDIT:
+      return {
+        ...state,
+        name: action.payload.name,
+        lastName: action.payload.lastName,
+      };
     case FormActionType.EDIT_PERSON_NAME:
       return {
         ...state,
@@ -23,7 +29,7 @@ export const formReducer = (
     case FormActionType.EDIT_PERSON_LASTNAME:
       return {
         ...state,
-        name: action.payload,
+        lastName: action.payload,
       };
 
     case FormActionType.SET_MODAL_ACTIVE:

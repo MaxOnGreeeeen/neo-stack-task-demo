@@ -17,6 +17,7 @@ export enum FormActionType {
   SET_NAME_INPUT_ERROR = "SET_NAME_INPUT_ERROR",
   SET_LASTNAME_INPUT_ERROR = "SET_LASTNAME_INPUT_ERROR",
   SET_MODAL_ACTIVE = "SET_MODAL_ACTIVE",
+  SET_PERSON_EDIT = "SET_PERSON_EDIT",
 }
 
 export interface CreatePerson {
@@ -54,6 +55,11 @@ export interface ModalManageVisibility {
   payload: boolean;
 }
 
+export interface SetPersonEdit {
+  type: FormActionType.SET_PERSON_EDIT;
+  payload: Person;
+}
+
 export type FormActions =
   | ModalManageVisibility
   | CreatePersonConfirm
@@ -62,4 +68,5 @@ export type FormActions =
   | EditPersonName
   | EditPersonConfirm
   | SetLastnameInputError
-  | SetNameInputError;
+  | SetNameInputError
+  | SetPersonEdit;

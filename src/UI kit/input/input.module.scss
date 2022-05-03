@@ -1,0 +1,45 @@
+input[type="text"],
+input[type="submit"] {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  box-sizing: border-box;
+}
+
+.inputBlock {
+  width: 100%;
+  flex-direction: column;
+}
+
+.inputField {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 18px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  color: #333333;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+
+  &.error {
+    border: 1px solid #eb5757;
+  }
+
+  &:focus {
+    outline: solid 2px #585cc6;
+  }
+}
+
+.errorMessage {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  color: #eb5757;
+
+  & > span {
+    &:before {
+      content: "x ";
+    }
+  }
+}

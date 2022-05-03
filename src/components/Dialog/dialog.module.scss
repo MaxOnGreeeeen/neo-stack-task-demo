@@ -22,10 +22,10 @@
 
   .modalContent {
     width: auto;
-    min-width: 600px;
+    min-width: 400px;
     height: auto;
-    min-height: 600px;
-    padding: $block-padding;
+    min-height: 200px;
+    padding: 30px;
     background-color: $block-bg-color;
     border-radius: $button-border-radius;
 
@@ -34,6 +34,14 @@
 
     &.active {
       transform: scale(1);
+    }
+
+    .modalHeader {
+      width: 100%;
+      @extend %justify-center;
+      justify-content: space-between;
+
+      margin-bottom: 2em;
     }
   }
 }

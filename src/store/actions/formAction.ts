@@ -1,8 +1,14 @@
 import { Dispatch } from "redux";
 
 import { FormActions, FormActionType } from "../../types/form";
+import { Person } from "../../types/person";
 
-export const editPerson = () => {};
+
+export const setPersonEdit = (person: Person) => {
+  return (dispatch: Dispatch<FormActions>) => {
+    dispatch({ type: FormActionType.SET_PERSON_EDIT, payload: person });
+  };
+};
 
 export const editPersonName = (name: string) => {
   return (dispatch: Dispatch<FormActions>) => {
@@ -16,4 +22,8 @@ export const setModalVisibility = (active: boolean) => {
   };
 };
 
-export const editPersonLastname = () => {};
+export const editPersonLastname = (lastName: string) => {
+  return (dispatch: Dispatch<FormActions>) => {
+    dispatch({ type: FormActionType.EDIT_PERSON_LASTNAME, payload: lastName });
+  };
+};

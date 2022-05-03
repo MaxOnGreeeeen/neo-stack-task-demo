@@ -1,3 +1,3 @@
-import CreatePersonForm from "./CreatePersonForm";
+import CreateEditPersonForm from "./CreateEditPersonForm";
 
-export default CreatePersonForm;
+export default CreateEditPersonForm;
