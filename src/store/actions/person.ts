@@ -1,4 +1,4 @@
-import { ActionCreator, Dispatch } from "redux";
+import { Dispatch } from "redux";
 
 import axios from "axios";
 
@@ -16,11 +16,21 @@ export const getPersons = (page: number, limit: number) => {
         },
       });
 
-      const users: Person[] = response.data;
+      const persons: Person[] = response.data;
+
+      const totalPersonsCount: number = Number(
+        response.headers["x-total-count"]
+      );
+
+      const pagesAmount: number = Math.ceil(totalPersonsCount / limit);
 
       dispatch({
         type: PersonActionTypes.GET_PERSONS_SUCCESS,
-        payload: users,
+        payload: {
+          persons: persons,
+          personsTotalQuantity: totalPersonsCount,
+          pagesQuantity: pagesAmount,
+        },
       });
     } catch (e: unknown) {
       if (typeof e === "string") {
@@ -44,11 +54,31 @@ export const setPersonsPage = (page: number): PersonAction => {
   return { type: PersonActionTypes.SET_PERSONS_PAGE, payload: page };
 };
 
+export const setTotalPersonsAmount = (
+  prev: number,
+  raise: number,
+  limit: number
+) => {
+  return (dispatch: Dispatch<PersonAction>) => {
+    const personsAmount: number = prev + raise;
+
+    const pagesAmount: number = Math.ceil(Number(personsAmount) / limit);
+
+    dispatch({
+      type: PersonActionTypes.SET_PERSONS_PAGE_QUANTITY,
+      payload: pagesAmount,
+    });
+
+    dispatch({
+      type: PersonActionTypes.SET_TOTAL_PERSONS_QUANTITY,
+      payload: personsAmount,
+    });
+  };
+};
+
 export const editPerson = (person: Person) => {
   return async (dispatch: Dispatch<PersonAction>) => {
     try {
-      setLoading(true);
-
       const response = await axios.put(
         `http://localhost:5000/api/v1/person/${person.id}`,
         person
@@ -60,8 +90,6 @@ export const editPerson = (person: Person) => {
         type: PersonActionTypes.EDIT_PERSON,
         payload: personFromResponse,
       });
-
-      setLoading(false);
     } catch (e: unknown) {
       if (typeof e === "string") {
         dispatch({
@@ -83,19 +111,17 @@ export const editPerson = (person: Person) => {
 export const createPerson = (person: Person) => {
   return async (dispatch: Dispatch<PersonAction>) => {
     try {
-      setLoading(true);
-
       const response = await axios.post(
         "http://localhost:5000/api/v1/person",
         person
       );
 
       const personFromResponse: Person = response.data;
+
       dispatch({
         type: PersonActionTypes.CREATE_PERSON,
         payload: personFromResponse,
       });
-      setLoading(false);
     } catch (e: unknown) {
       if (typeof e === "string") {
         dispatch({
@@ -117,8 +143,6 @@ export const createPerson = (person: Person) => {
 export const deletePerson = (id: number) => {
   return async (dispatch: Dispatch<PersonAction>) => {
     try {
-      setLoading(true);
-
       const response = await axios.delete(
         `http://localhost:5000/api/v1/person/${id}`
       );
@@ -127,7 +151,6 @@ export const deletePerson = (id: number) => {
         type: PersonActionTypes.DELETE_PERSON,
         payload: id,
       });
-      setLoading(false);
     } catch (e: unknown) {
       if (typeof e === "string") {
         dispatch({

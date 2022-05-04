@@ -7,13 +7,21 @@ export enum ButtonVariant {
   default = "default",
   rounded = "rounded",
   submit = "submit",
+  disabled = "disabled",
+}
+
+export enum ButtonTypes {
+  submit = "submit",
 }
 
 interface ButtonProps {
-  onClick: (e: React.MouseEvent) => void | undefined;
+  onClick?: (e: React.MouseEvent) => void | undefined;
   children: string | number | ReactNode;
   variant: ButtonVariant | null;
   active?: boolean | undefined;
+  disabled?: boolean;
+  background?: string;
+  type?: ButtonTypes;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -21,22 +29,47 @@ const Button: React.FC<ButtonProps> = ({
   children,
   variant,
   active,
+  disabled,
+  background,
+  type,
 }) => {
+  const switchButtonClasses = (variant: ButtonVariant | null): string => {
+    switch (variant) {
+      case ButtonVariant.default:
+        return buttonClasses.default;
+
+      case ButtonVariant.rounded:
+        return buttonClasses.rounded;
+
+      case ButtonVariant.pagination:
+        return buttonClasses.pagination;
+
+      case ButtonVariant.disabled:
+        return buttonClasses.disabled;
+
+      case ButtonVariant.submit:
+        return buttonClasses.submit;
+
+      default:
+        return buttonClasses.default;
+    }
+  };
+  const buttonClasses = {
+    pagination: `${classes.buttonDefault} ${classes.paginateButton}`,
+    default: classes.buttonDefault,
+    disabled: `${classes.buttonDefault} ${classes.disabled}`,
+    rounded: `${classes.buttonDefault} ${classes.rounded}`,
+    submit: `${classes.buttonDefault} ${classes.submit}`,
+  };
   return (
     <button
+      disabled={disabled}
+      type={type}
       onClick={onClick}
-      className={
-        variant === ButtonVariant.pagination
-          ? `${classes.buttonDefault} ${classes.paginateButton}`
-          : classes.buttonDefault
-      }
+      className={switchButtonClasses(variant)}
       style={{
-        border: active ? "1px solid #585cc6" : "inherit",
-        borderRadius: variant === ButtonVariant.rounded ? "50%" : "",
-        backgroundColor: variant === ButtonVariant.rounded ? "none" : "#e0e0e0",
-        background:
-          variant === ButtonVariant.submit ? " rgb(53, 55, 119)" : "#e0e0e0",
-        color: variant === ButtonVariant.submit ? "white" : "black",
+        pointerEvents: disabled ? "none" : "all",
+        background: background,
       }}
     >
       {children}

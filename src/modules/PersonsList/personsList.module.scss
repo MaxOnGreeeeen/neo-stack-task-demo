@@ -17,23 +17,22 @@
 
 .titleForCards {
   width: 100%;
-  margin-bottom: 2em;
   .titleBlock {
     margin-bottom: 2em;
     width: 100%;
     text-align: start;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .theadInfo {
     display: flex;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 0;
 
     h2 {
       text-align: start;
-      font-weight: 600;
       &:nth-child(1) {
         width: 10%;
       }

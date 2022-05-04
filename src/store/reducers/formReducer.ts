@@ -1,5 +1,4 @@
 import { FormActionType, FormActions, FormState } from "../../types/form";
-import { Person } from "../../types/person";
 
 const initialState: FormState = {
   activeCreate: false,

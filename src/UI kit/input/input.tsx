@@ -2,12 +2,17 @@ import React, { ReactNode } from "react";
 
 import classes from "./input.module.scss";
 
+export enum InputTypes {
+  submit = "submit",
+  text = "text",
+}
+
 interface InputProps {
   onChange: (e: { target: HTMLInputElement }) => void;
   placeHolder: string;
   error: boolean;
   errorMessage?: ReactNode;
-  type?: string;
+  type?: InputTypes;
   name?: string;
   value?: string;
 }
@@ -32,7 +37,9 @@ const Input: React.FC<InputProps> = ({
         value={value}
       ></input>
       <label className={error ? classes.errorMessage : classes.disabledLabel}>
-        <span>{errorMessage}</span>
+        <div className={classes.errorEmpty}>
+          {error ? <span>{errorMessage}</span> : <div />}
+        </div>
       </label>
     </div>
   );

@@ -4,16 +4,18 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 
 import PersonCard from "../../components/PersonCard";
-import CreateEditPersonForm from "../../components/CreatePersonForm";
+import CreateEditPersonForm from "../../components/CreateEditPersonForm";
 import { Dialog } from "../../components";
 
-import ConfirmActionForm from "../../UI kit/confirmActionForm";
-import Button, { ButtonVariant } from "../../UI kit/button/button";
+import { ConfirmActionForm, Preloader, Button } from "../../UI kit";
+
+import { ButtonVariant } from "../../UI kit/button/button";
 
 import { Person } from "../../types/person";
 
+import Pagination from "@mui/material/Pagination";
+
 import classes from "./personsList.module.scss";
-import { setModalVisibility } from "../../store/actions/formAction";
 
 const PersonsList: React.FC = () => {
   const {
@@ -31,11 +33,18 @@ const PersonsList: React.FC = () => {
     setEditDialogVisible,
     disproveAction,
     clearFormData,
+    setTotalPersonsAmount,
   } = useActions();
 
-  const { persons, error, loading, page, limit, pages } = useTypedSelector(
-    (state) => state.persons
-  );
+  const {
+    persons,
+    error,
+    loading,
+    page,
+    limit,
+    personsTotalQuantity,
+    pagesQuantity,
+  } = useTypedSelector((state) => state.persons);
 
   const { message, activeCreateDialog, activeEditDialog } = useTypedSelector(
     (state) => state.confirm
@@ -44,7 +53,6 @@ const PersonsList: React.FC = () => {
   const {
     activeEdit,
     activeCreate,
-    person: modalEditedPerson,
     name,
     lastName,
     id: personId,
@@ -52,14 +60,12 @@ const PersonsList: React.FC = () => {
 
   useEffect(() => {
     getPersons(page, limit);
-  }, [page]);
+  }, [page, personsTotalQuantity]);
 
-  const handlePageClick = (e: React.MouseEvent) => {
-    setPersonsPage(Number(e.currentTarget.textContent));
-  };
+  useEffect(() => {}, []);
 
-  const checkActivePage = (pageNumber: string | number) => {
-    return Number(pageNumber) === page;
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPersonsPage(value);
   };
 
   const handleEditPerson = (person: Person) => {
@@ -73,6 +79,7 @@ const PersonsList: React.FC = () => {
 
   const handleDeletePerson = (person: Person) => {
     deletePerson(Number(person.id));
+    setTotalPersonsAmount(personsTotalQuantity, -1, limit);
   };
 
   const onModalCreateClose = () => {
@@ -85,14 +92,12 @@ const PersonsList: React.FC = () => {
     clearFormData();
   };
 
-  const submitCreatePersonForm = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const submitCreatePersonForm = () => {
     setMessage("Подтвердить создание пользователя?");
     setCreateDialogVisible(true);
   };
 
-  const submitEditPersonForm = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const submitEditPersonForm = () => {
     setMessage("Подтвердить сохранение изменений?");
     setEditDialogVisible(true);
   };
@@ -126,8 +131,20 @@ const PersonsList: React.FC = () => {
 
     setModalVisibility(false, "create");
     createPerson(createdPerson);
+    setTotalPersonsAmount(personsTotalQuantity, 1, limit);
     clearFormData();
   };
+
+  const Persons = persons.map((person, number) => {
+    return (
+      <PersonCard
+        deleteHandler={handleDeletePerson}
+        editHandler={handleEditPerson}
+        key={number}
+        person={person}
+      />
+    );
+  });
 
   return (
     <div className={classes.mainBlock}>
@@ -191,29 +208,16 @@ const PersonsList: React.FC = () => {
         />
       </Dialog>
 
-      {persons.map((person, number) => {
-        return (
-          <PersonCard
-            deleteHandler={handleDeletePerson}
-            editHandler={handleEditPerson}
-            key={number}
-            person={person}
-          />
-        );
-      })}
+      {loading ? <Preloader /> : Persons}
+
       <div className={classes.paginationBlock}>
-        {pages.map((pageNumber) => {
-          return (
-            <Button
-              variant={ButtonVariant.pagination}
-              onClick={handlePageClick}
-              active={checkActivePage(pageNumber)}
-              key={pageNumber}
-            >
-              {pageNumber}
-            </Button>
-          );
-        })}
+        <Pagination
+          count={pagesQuantity}
+          defaultPage={1}
+          page={page}
+          onChange={handleChange}
+          size="large"
+        />
       </div>
     </div>
   );

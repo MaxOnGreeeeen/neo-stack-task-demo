@@ -37,13 +37,13 @@ export const confirmReducer = (
     case ConfirmActionTypes.SET_CREATE_DIALOG_VISIBLE:
       return {
         ...state,
-        activeEditDialog: action.payload,
+        activeCreateDialog: action.payload,
       };
 
     case ConfirmActionTypes.SET_EDIT_DIALOG_VISIBLE:
       return {
         ...state,
-        activeCreateDialog: action.payload,
+        activeEditDialog: action.payload,
       };
 
     case ConfirmActionTypes.DISPROVE_ACTION:

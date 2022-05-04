@@ -10,7 +10,8 @@ const initialState: PersonState = {
   error: null,
   page: 1,
   limit: 10,
-  pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  pagesQuantity: 10,
+  personsTotalQuantity: 100,
 };
 
 export const personReducer = (
@@ -27,10 +28,17 @@ export const personReducer = (
       };
 
     case PersonActionTypes.GET_PERSONS_SUCCESS:
-      return { ...state, loading: true, error: "", persons: action.payload };
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        persons: action.payload.persons,
+        personsTotalQuantity: action.payload.personsTotalQuantity,
+        pagesQuantity: action.payload.pagesQuantity,
+      };
 
     case PersonActionTypes.GET_PERSONS_ERROR:
-      return { ...state, loading: true, error: action.payload, persons: [] };
+      return { ...state, loading: false, error: action.payload, persons: [] };
 
     case PersonActionTypes.CREATE_PERSON:
       return {
@@ -67,6 +75,18 @@ export const personReducer = (
       return {
         ...state,
         page: action.payload,
+      };
+
+    case PersonActionTypes.SET_PERSONS_PAGE_QUANTITY:
+      return {
+        ...state,
+        pagesQuantity: action.payload,
+      };
+
+    case PersonActionTypes.SET_TOTAL_PERSONS_QUANTITY:
+      return {
+        ...state,
+        personsTotalQuantity: action.payload,
       };
     default:
       return state;

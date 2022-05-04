@@ -1,4 +1,6 @@
-import button from "./button";
-import input from "./input";
+import Button from "./button";
+import Input from "./input";
+import Preloader from "./preloader";
+import ConfirmActionForm from "./confirmActionForm";
 
-export { button, input };
+export { Button, Input, Preloader, ConfirmActionForm };

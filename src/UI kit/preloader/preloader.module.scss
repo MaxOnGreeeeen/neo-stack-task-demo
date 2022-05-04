@@ -1,0 +1,43 @@
+.preLoaderBack {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  background: white;
+  justify-content: center;
+  align-items: center;
+}
+
+.preLoaderOutside {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  animation: aimatePreloader 1s infinite; /*cubic-bezier(0.2,-2,0.8,2);*/
+}
+
+.preloaderInside {
+  border: 1.5em solid #6c64d7;
+  border-top-color: #fdfdfd;
+}
+
+@keyframes aimatePreloader {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+  }
+  50% {
+  }
+  75% {
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

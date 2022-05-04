@@ -4,7 +4,8 @@ export interface PersonState {
   error: null | string;
   page: number;
   limit: number;
-  pages: number[];
+  pagesQuantity: number;
+  personsTotalQuantity: number;
 }
 export interface Person {
   id: number | null;
@@ -20,6 +21,8 @@ export enum PersonActionTypes {
   DELETE_PERSON = "DELETE_PERSON",
   SET_LOADING = "SET_LOADING",
   SET_PERSONS_PAGE = "SET_PERSONS_PAGE",
+  SET_PERSONS_PAGE_QUANTITY = "SET_PERSONS_PAGE_QUANTITY",
+  SET_TOTAL_PERSONS_QUANTITY = "SET_TOTAL_PERSONS_QUANTITY",
 }
 
 export interface GetPersons {
@@ -33,7 +36,11 @@ export interface GetPersonsError {
 
 export interface GetPersonSuccess {
   type: PersonActionTypes.GET_PERSONS_SUCCESS;
-  payload: Person[];
+  payload: {
+    persons: Person[];
+    personsTotalQuantity: number;
+    pagesQuantity: number;
+  };
 }
 
 export interface EditPerson {
@@ -60,6 +67,16 @@ export interface SetPersonsPage {
   type: PersonActionTypes.SET_PERSONS_PAGE;
   payload: number;
 }
+
+export interface SetPageQuantity {
+  type: PersonActionTypes.SET_PERSONS_PAGE_QUANTITY;
+  payload: number;
+}
+
+export interface SetPersonsTotalQuantity {
+  type: PersonActionTypes.SET_TOTAL_PERSONS_QUANTITY;
+  payload: number;
+}
 export type PersonAction =
   | GetPersons
   | EditPerson
@@ -68,4 +85,6 @@ export type PersonAction =
   | CreatePerson
   | DeletePerson
   | SetLoading
-  | SetPersonsPage;
+  | SetPersonsPage
+  | SetPageQuantity
+  | SetPersonsTotalQuantity;

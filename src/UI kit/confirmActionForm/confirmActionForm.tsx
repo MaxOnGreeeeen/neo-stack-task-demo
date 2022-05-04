@@ -23,7 +23,11 @@ const ConfirmActionForm: React.FC<ConfirmFormProps> = ({
         <Button onClick={onConfirm} variant={ButtonVariant.submit}>
           {"Да"}
         </Button>
-        <Button onClick={onClose} variant={ButtonVariant.default}>
+        <Button
+          onClick={onClose}
+          variant={ButtonVariant.default}
+          background={"none"}
+        >
           {"Нет"}
         </Button>
       </div>
