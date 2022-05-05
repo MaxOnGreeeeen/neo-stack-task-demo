@@ -47,3 +47,14 @@
     }
   }
 }
+
+@media screen and (max-width: 600px) {
+  .modal {
+    .modalContent {
+      min-width: 300px;
+      height: auto;
+      min-height: 200px;
+      padding: 15px;
+    }
+  }
+}

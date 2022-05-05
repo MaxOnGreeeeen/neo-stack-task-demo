@@ -52,6 +52,7 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
 
   const submitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!validateFields(name, lastName)) {
       submitForm();
     }

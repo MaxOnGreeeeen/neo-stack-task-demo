@@ -1,7 +1,7 @@
 export interface PersonState {
   persons: Person[] | any[];
   loading: boolean;
-  error: null | string;
+  error?: string;
   page: number;
   limit: number;
   pagesQuantity: number;

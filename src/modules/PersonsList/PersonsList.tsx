@@ -7,7 +7,12 @@ import PersonCard from "../../components/PersonCard";
 import CreateEditPersonForm from "../../components/CreateEditPersonForm";
 import { Dialog } from "../../components";
 
-import { ConfirmActionForm, Preloader, Button } from "../../UI kit";
+import {
+  Button,
+  ConfirmActionForm,
+  Preloader,
+  ToastNotification,
+} from "../../UI kit";
 
 import { ButtonVariant } from "../../UI kit/button/button";
 
@@ -16,6 +21,7 @@ import { Person } from "../../types/person";
 import Pagination from "@mui/material/Pagination";
 
 import classes from "./personsList.module.scss";
+import { ToastVariants } from "../../UI kit/toastNotitifcation/toastNotification";
 
 const PersonsList: React.FC = () => {
   const {
@@ -34,6 +40,7 @@ const PersonsList: React.FC = () => {
     disproveAction,
     clearFormData,
     setTotalPersonsAmount,
+    createToast,
   } = useActions();
 
   const {
@@ -50,6 +57,8 @@ const PersonsList: React.FC = () => {
     (state) => state.confirm
   );
 
+  const { toasts } = useTypedSelector((state) => state.toasts);
+
   const {
     activeEdit,
     activeCreate,
@@ -60,9 +69,11 @@ const PersonsList: React.FC = () => {
 
   useEffect(() => {
     getPersons(page, limit);
-  }, [page, personsTotalQuantity]);
 
-  useEffect(() => {}, []);
+    if (error !== "") {
+      createToast(toasts.length, ToastVariants.error, "Ошибка сети");
+    }
+  }, [page, personsTotalQuantity]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPersonsPage(value);
@@ -79,6 +90,9 @@ const PersonsList: React.FC = () => {
 
   const handleDeletePerson = (person: Person) => {
     deletePerson(Number(person.id));
+
+    createToastConstructor("Пользователь успешно удален");
+
     setTotalPersonsAmount(personsTotalQuantity, -1, limit);
   };
 
@@ -117,6 +131,9 @@ const PersonsList: React.FC = () => {
 
     setModalVisibility(false, "edit");
     editPerson(editedPerson);
+
+    createToastConstructor("Пользователь успешно отредактирован");
+
     clearFormData();
   };
 
@@ -131,8 +148,20 @@ const PersonsList: React.FC = () => {
 
     setModalVisibility(false, "create");
     createPerson(createdPerson);
+
+    createToastConstructor("Пользователь успешно создан");
+
     setTotalPersonsAmount(personsTotalQuantity, 1, limit);
     clearFormData();
+  };
+
+  const createToastConstructor = (message: string) => {
+    if (error !== undefined && error !== "") {
+      createToast(toasts.length, ToastVariants.error, error);
+    }
+    if (error === "") {
+      createToast(toasts.length, ToastVariants.success, message);
+    }
   };
 
   const Persons = persons.map((person, number) => {
@@ -210,14 +239,25 @@ const PersonsList: React.FC = () => {
 
       {loading ? <Preloader /> : Persons}
 
-      <div className={classes.paginationBlock}>
-        <Pagination
-          count={pagesQuantity}
-          defaultPage={1}
-          page={page}
-          onChange={handleChange}
-          size="large"
-        />
+      <Pagination
+        sx={{ marginTop: "1em" }}
+        count={pagesQuantity}
+        defaultPage={1}
+        page={page}
+        onChange={handleChange}
+        size="large"
+      />
+
+      <div className={classes.toastBlock}>
+        {toasts.map((toast) => {
+          return (
+            <ToastNotification
+              variant={toast.type}
+              message={toast.message}
+              id={toast.id}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -151,6 +151,7 @@ export const deletePerson = (id: number) => {
         type: PersonActionTypes.DELETE_PERSON,
         payload: id,
       });
+
     } catch (e: unknown) {
       if (typeof e === "string") {
         dispatch({

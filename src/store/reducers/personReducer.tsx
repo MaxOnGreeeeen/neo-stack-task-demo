@@ -7,7 +7,7 @@ import {
 const initialState: PersonState = {
   persons: [],
   loading: false,
-  error: null,
+  error: "",
   page: 1,
   limit: 10,
   pagesQuantity: 10,

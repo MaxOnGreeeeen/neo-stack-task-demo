@@ -1,0 +1,64 @@
+@import "../../theme";
+@import "../../sizes";
+
+.toastNotification {
+  position: relative;
+  height: 50px;
+  width: 350px;
+  padding: 20px;
+  margin-bottom: 1em;
+  border-radius: $block-border-radius;
+  box-shadow: $main-box-shadow;
+  opacity: 0.9;
+  transition: 0.3s ease;
+
+  animation: toast-from-right 0.5s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  & > button {
+    color: white;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  &.success {
+    background-color: goldenrod;
+    color: white;
+  }
+
+  &.error {
+    background-color: #d93737;
+    color: white;
+  }
+
+  &.info {
+    background-color: #585cc6;
+    color: white;
+  }
+
+  &.warning {
+    background-color: #6b551f;
+    color: white;
+  }
+
+  .contentBlock {
+    @extend %justify-column;
+    & > p {
+      margin-top: 0.5em;
+      font-family: Montserrat-Medium;
+    }
+  }
+}
+
+@keyframes toast-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
