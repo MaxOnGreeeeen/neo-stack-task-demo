@@ -1,16 +1,17 @@
 import React from "react";
 
+import { useActions } from "../../hooks/useActions";
+
 import { Button } from "../index";
 import { ButtonVariant } from "../button/button";
 
 import classes from "./toastNotification.module.scss";
-import { useActions } from "../../hooks/useActions";
 
 export enum ToastVariants {
-  warning = "warning",
-  success = "success",
-  info = "info",
-  error = "error",
+  warning = "предупреждение",
+  success = "успешно",
+  info = "уведомление",
+  error = "ошибка",
 }
 
 interface ToastProps {
@@ -20,13 +21,20 @@ interface ToastProps {
   id: number;
 }
 
-const ToastNotification: React.FC<ToastProps> = ({
-  active,
-  variant,
-  message,
-  id,
-}) => {
+export interface MatchesTypes {
+  code: ToastVariants;
+  name: string;
+}
+
+const ToastNotification: React.FC<ToastProps> = ({ variant, message, id }) => {
   const { deleteToast } = useActions();
+
+  const notificationMatches: Array<MatchesTypes> = [
+    { code: ToastVariants.success, name: "Успешно!" },
+    { code: ToastVariants.error, name: "Ошибка!" },
+    { code: ToastVariants.info, name: "Уведомление!" },
+    { code: ToastVariants.warning, name: "Предупреждение!" },
+  ];
 
   const switchClassname = (variant: ToastVariants): string => {
     switch (variant) {
@@ -50,13 +58,24 @@ const ToastNotification: React.FC<ToastProps> = ({
   const handleDeleteToast = () => {
     deleteToast(id);
   };
+
+  const getStringMessageValue = (variant: ToastVariants): string => {
+    let notification: string = "";
+
+    notificationMatches.every((match) => {
+      if (match.code === variant) {
+        notification = match.name;
+      }
+    });
+    return notification;
+  };
   return (
     <div className={switchClassname(variant)} onClick={handleDeleteToast}>
       <Button variant={ButtonVariant.rounded} onClick={handleDeleteToast}>
         X
       </Button>
       <div className={classes.contentBlock}>
-        <h3>{variant}</h3>
+        <h3>{getStringMessageValue(variant)}</h3>
         <p>{message}</p>
       </div>
     </div>
