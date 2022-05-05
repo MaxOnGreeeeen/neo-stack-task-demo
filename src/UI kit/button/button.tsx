@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, ReactNode } from "react";
+import React, {  ReactNode } from "react";
 
 import classes from "./button.module.scss";
 
@@ -28,7 +28,6 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
   variant,
-  active,
   disabled,
   background,
   type,

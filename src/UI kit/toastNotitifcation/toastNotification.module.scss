@@ -62,3 +62,9 @@
     transform: translateX(0%);
   }
 }
+
+@media screen and (max-width: 600px) {
+  .toastNotification {
+    width: 250px;
+  }
+}
