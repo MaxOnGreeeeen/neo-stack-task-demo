@@ -1,4 +1,4 @@
-import React, { Dispatch } from "react";
+import React from "react";
 
 import { useActions } from "../../hooks/useActions";
 
@@ -6,7 +6,6 @@ import { Button } from "../index";
 import { ButtonVariant } from "../button/button";
 
 import classes from "./toastNotification.module.scss";
-import { deleteToast } from "../../store/actions/toastActions";
 
 export enum ToastVariants {
   warning = "предупреждение",
@@ -78,7 +77,7 @@ const ToastNotification: React.FC<ToastProps> = ({ variant, message, id }) => {
       <div className={classes.contentBlock}>
         <h3>{getStringMessageValue(variant)}</h3>
         <p>{message}</p>
-        <div className={classes.notificationLoader}></div>
+        <div className={classes.notificationLoader} />
       </div>
     </div>
   );

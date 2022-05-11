@@ -62,13 +62,7 @@ export const personReducer = (
       return {
         ...state,
         persons: state.persons.map((person) => {
-          if (person.id !== action.payload.id) {
-            return person;
-          }
-
-          if (person.id === action.payload.id) {
-            return action.payload;
-          }
+          return person.id !== action.payload.id ? person : action.payload;
         }),
       };
 

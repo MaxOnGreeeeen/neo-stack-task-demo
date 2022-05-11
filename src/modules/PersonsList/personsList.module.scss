@@ -70,6 +70,23 @@
   z-index: 10000;
   font-size: 14px;
 }
+@media screen and (max-width: 750px) {
+  .theadInfo {
+    width: 100%;
+
+    h2 {
+      &:nth-child(1) {
+        display: none;
+      }
+      &:nth-child(2) {
+        width: 50% !important;
+      }
+      &:nth-child(3) {
+        width: 50% !important;
+      }
+    }
+  }
+}
 
 @media screen and (max-width: 600px) {
   .mainBlock {

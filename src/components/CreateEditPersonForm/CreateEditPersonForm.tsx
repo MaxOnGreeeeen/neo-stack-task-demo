@@ -2,28 +2,24 @@ import React, { useEffect, useState } from "react";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
-import { Person } from "../../types/person";
 
 import { Utils } from "../../helpers/Utils";
 
 import { Button, Input } from "../../UI kit";
 
 import { ButtonTypes, ButtonVariant } from "../../UI kit/button/button";
+import { InputTypes } from "../../UI kit/input/input";
 
 import classes from "./createPersonForm.module.scss";
-import { InputTypes } from "../../UI kit/input/input";
 
 interface CreatePersonFormProps {
   submitForm: () => void;
-  person?: Person;
-  confirmMessage: string;
   buttonTitle: string;
 }
+
 const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
   submitForm,
-  person,
   buttonTitle,
-  confirmMessage,
 }) => {
   const { name, lastName } = useTypedSelector((state) => state.form);
 

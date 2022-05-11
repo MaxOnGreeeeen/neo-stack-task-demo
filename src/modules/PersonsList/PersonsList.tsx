@@ -3,9 +3,7 @@ import React, { useEffect } from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 
-import PersonCard from "../../components/PersonCard";
-import CreateEditPersonForm from "../../components/CreateEditPersonForm";
-import { Dialog } from "../../components";
+import { PersonCard, CreateEditPersonForm, Dialog } from "../../components";
 
 import {
   Button,
@@ -13,16 +11,13 @@ import {
   Preloader,
   ToastNotification,
 } from "../../UI kit";
-
-import { ButtonVariant } from "../../UI kit/button/button";
-
-import { Person } from "../../types/person";
-
 import Pagination from "@mui/material/Pagination";
 
-import classes from "./personsList.module.scss";
+import { ButtonVariant } from "../../UI kit/button/button";
 import { ToastVariants } from "../../UI kit/toastNotitifcation/toastNotification";
-import { createToast } from "../../store/actions/toastActions";
+import { Person } from "../../types/person";
+
+import classes from "./personsList.module.scss";
 
 const PersonsList: React.FC = () => {
   const {
@@ -74,11 +69,13 @@ const PersonsList: React.FC = () => {
   }, [page, personsTotalQuantity]);
 
   useEffect(() => {
+    const randomToastId = Date.now();
+
     if (toastMessage !== "") {
       createToast({
         type: ToastVariants.success,
         message: toastMessage,
-        id: Date.now(),
+        id: randomToastId,
       });
     }
 
@@ -86,7 +83,7 @@ const PersonsList: React.FC = () => {
       createToast({
         type: ToastVariants.error,
         message: error,
-        id: Date.now(),
+        id: randomToastId,
       });
     }
   }, [error, toastMessage]);
@@ -202,20 +199,19 @@ const PersonsList: React.FC = () => {
             <CreateEditPersonForm
               buttonTitle={"сохранить"}
               submitForm={submitCreatePersonForm}
-              confirmMessage={message}
             />
           </Dialog>
           <Button onClick={handleCreatePerson} variant={ButtonVariant.submit}>
             {"Добавить сотрудника"}
           </Button>
         </div>
-        <hr></hr>
+        <hr />
         <div className={classes.theadInfo}>
           <h2>№</h2>
           <h2>Имя</h2>
           <h2>Фамилия</h2>
         </div>
-        <hr></hr>
+        <hr />
       </div>
       <Dialog
         active={activeEditDialog}
@@ -236,7 +232,6 @@ const PersonsList: React.FC = () => {
         <CreateEditPersonForm
           buttonTitle={"сохранить "}
           submitForm={submitEditPersonForm}
-          confirmMessage={message}
         />
       </Dialog>
 
