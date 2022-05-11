@@ -1,7 +1,7 @@
 import { ToastVariants } from "../UI kit/toastNotitifcation/toastNotification";
 
 export interface Toast {
-  id: number;
+  id: number | null;
   message: string;
   type: ToastVariants;
 }
@@ -28,7 +28,7 @@ export interface CreateToast {
 
 export interface DeleteToast {
   type: ToastsActionTypes.DELETE_TOAST;
-  payload: number;
+  payload: number | null;
 }
 
 export type ToastsActions = CreateToast | ShowToasts | DeleteToast;

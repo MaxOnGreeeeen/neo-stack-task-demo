@@ -1,31 +1,23 @@
-import { Dispatch } from "redux";
-import { ToastVariants } from "../../UI kit/toastNotitifcation/toastNotification";
-import { ToastsActions, ToastsActionTypes } from "../../types/toasts";
+import { Toast, ToastsActions, ToastsActionTypes } from "../../types/toasts";
+import { Dispatch } from "react";
 
-export const createToast = (
-  id: number,
-  type: ToastVariants,
-  message: string
-) => {
+export const createToast = (toast: Toast) => {
   return (dispatch: Dispatch<ToastsActions>) => {
     dispatch({
       type: ToastsActionTypes.CREATE_TOAST,
-      payload: {
-        id: id,
-        type: type,
-        message: message,
-      },
+      payload: toast,
     });
+
     setTimeout(() => {
       dispatch({
         type: ToastsActionTypes.DELETE_TOAST,
-        payload: id,
+        payload: toast.id,
       });
     }, 5000);
   };
 };
 
-export const deleteToast = (id: number) => {
+export const deleteToast = (id: number | null) => {
   return (dispatch: Dispatch<ToastsActions>) => {
     dispatch({
       type: ToastsActionTypes.DELETE_TOAST,

@@ -22,6 +22,7 @@ import Pagination from "@mui/material/Pagination";
 
 import classes from "./personsList.module.scss";
 import { ToastVariants } from "../../UI kit/toastNotitifcation/toastNotification";
+import { createToast } from "../../store/actions/toastActions";
 
 const PersonsList: React.FC = () => {
   const {
@@ -51,6 +52,7 @@ const PersonsList: React.FC = () => {
     limit,
     personsTotalQuantity,
     pagesQuantity,
+    toastMessage,
   } = useTypedSelector((state) => state.persons);
 
   const { message, activeCreateDialog, activeEditDialog } = useTypedSelector(
@@ -69,11 +71,25 @@ const PersonsList: React.FC = () => {
 
   useEffect(() => {
     getPersons(page, limit);
+  }, [page, personsTotalQuantity]);
+
+  useEffect(() => {
+    if (toastMessage !== "") {
+      createToast({
+        type: ToastVariants.success,
+        message: toastMessage,
+        id: Date.now(),
+      });
+    }
 
     if (error !== "") {
-      createToast(toasts.length, ToastVariants.error, "Ошибка сети");
+      createToast({
+        type: ToastVariants.error,
+        message: error,
+        id: Date.now(),
+      });
     }
-  }, [page, personsTotalQuantity]);
+  }, [error, toastMessage]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPersonsPage(value);
@@ -90,8 +106,6 @@ const PersonsList: React.FC = () => {
 
   const handleDeletePerson = (person: Person) => {
     deletePerson(Number(person.id));
-
-    createToastConstructor("Пользователь успешно удален");
 
     setTotalPersonsAmount(personsTotalQuantity, -1, limit);
   };
@@ -130,9 +144,8 @@ const PersonsList: React.FC = () => {
     };
 
     setModalVisibility(false, "edit");
-    editPerson(editedPerson);
 
-    createToastConstructor("Пользователь успешно отредактирован");
+    editPerson(editedPerson);
 
     clearFormData();
   };
@@ -149,19 +162,9 @@ const PersonsList: React.FC = () => {
     setModalVisibility(false, "create");
     createPerson(createdPerson);
 
-    createToastConstructor("Пользователь успешно создан");
-
     setTotalPersonsAmount(personsTotalQuantity, 1, limit);
-    clearFormData();
-  };
 
-  const createToastConstructor = (message: string) => {
-    if (error !== undefined && error !== "") {
-      createToast(toasts.length, ToastVariants.error, error);
-    }
-    if (error === "") {
-      createToast(toasts.length, ToastVariants.success, message);
-    }
+    clearFormData();
   };
 
   const Persons = persons.map((person, number) => {

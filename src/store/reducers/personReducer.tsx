@@ -12,6 +12,7 @@ const initialState: PersonState = {
   limit: 10,
   pagesQuantity: 10,
   personsTotalQuantity: 100,
+  toastMessage: "",
 };
 
 export const personReducer = (
@@ -88,6 +89,25 @@ export const personReducer = (
         ...state,
         personsTotalQuantity: action.payload,
       };
+
+    case PersonActionTypes.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: "",
+      };
+
+    case PersonActionTypes.SET_TOAST_MESSAGE:
+      return {
+        ...state,
+        toastMessage: action.payload,
+      };
+
+    case PersonActionTypes.CLEAR_MESSAGE:
+      return {
+        ...state,
+        toastMessage: "",
+      };
+
     default:
       return state;
   }

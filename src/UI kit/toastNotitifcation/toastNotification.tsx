@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch } from "react";
 
 import { useActions } from "../../hooks/useActions";
 
@@ -6,6 +6,7 @@ import { Button } from "../index";
 import { ButtonVariant } from "../button/button";
 
 import classes from "./toastNotification.module.scss";
+import { deleteToast } from "../../store/actions/toastActions";
 
 export enum ToastVariants {
   warning = "предупреждение",
@@ -18,7 +19,7 @@ interface ToastProps {
   active?: boolean;
   variant: ToastVariants;
   message: string;
-  id: number;
+  id: number | null;
 }
 
 export interface MatchesTypes {

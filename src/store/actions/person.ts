@@ -1,11 +1,14 @@
 import { Dispatch } from "redux";
 
-import axios from "axios";
-
 import { Person, PersonAction, PersonActionTypes } from "../../types/person";
+
+import axios from "axios";
 
 export const getPersons = (page: number, limit: number) => {
   return async (dispatch: Dispatch<PersonAction>) => {
+    dispatch({ type: PersonActionTypes.CLEAR_MESSAGE });
+    dispatch({ type: PersonActionTypes.CLEAR_ERRORS });
+
     try {
       dispatch({ type: PersonActionTypes.GET_PERSONS });
 
@@ -33,18 +36,17 @@ export const getPersons = (page: number, limit: number) => {
         },
       });
     } catch (e: unknown) {
+      dispatch({
+        type: PersonActionTypes.GET_PERSONS_ERROR,
+        payload: "Ошибка при загрузке пользователей!",
+      });
+
       if (typeof e === "string") {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e,
-        });
+        throw new Error(e);
       }
 
       if (e instanceof Error) {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e.message,
-        });
+        throw new Error(e.message);
       }
     }
   };
@@ -78,6 +80,9 @@ export const setTotalPersonsAmount = (
 
 export const editPerson = (person: Person) => {
   return async (dispatch: Dispatch<PersonAction>) => {
+    dispatch({ type: PersonActionTypes.CLEAR_MESSAGE });
+    dispatch({ type: PersonActionTypes.CLEAR_ERRORS });
+
     try {
       const response = await axios.put(
         `http://localhost:5000/api/v1/person/${person.id}`,
@@ -90,19 +95,23 @@ export const editPerson = (person: Person) => {
         type: PersonActionTypes.EDIT_PERSON,
         payload: personFromResponse,
       });
+
+      dispatch({
+        type: PersonActionTypes.SET_TOAST_MESSAGE,
+        payload: "Пользователь успешно отредактирован!",
+      });
     } catch (e: unknown) {
+      dispatch({
+        type: PersonActionTypes.GET_PERSONS_ERROR,
+        payload: "Ошибка при попытке редактирования!",
+      });
+
       if (typeof e === "string") {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e,
-        });
+        throw new Error(e);
       }
 
       if (e instanceof Error) {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e.message,
-        });
+        throw new Error(e.message);
       }
     }
   };
@@ -110,6 +119,9 @@ export const editPerson = (person: Person) => {
 
 export const createPerson = (person: Person) => {
   return async (dispatch: Dispatch<PersonAction>) => {
+    dispatch({ type: PersonActionTypes.CLEAR_MESSAGE });
+    dispatch({ type: PersonActionTypes.CLEAR_ERRORS });
+
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/person",
@@ -122,26 +134,33 @@ export const createPerson = (person: Person) => {
         type: PersonActionTypes.CREATE_PERSON,
         payload: personFromResponse,
       });
+
+      dispatch({
+        type: PersonActionTypes.SET_TOAST_MESSAGE,
+        payload: "Пользователь успешно создан!",
+      });
     } catch (e: unknown) {
+      dispatch({
+        type: PersonActionTypes.GET_PERSONS_ERROR,
+        payload: "Ошибка при создании пользователя!",
+      });
+
       if (typeof e === "string") {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e,
-        });
+        throw new Error(e);
       }
 
       if (e instanceof Error) {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e.message,
-        });
+        throw new Error(e.message);
       }
     }
   };
 };
 
 export const deletePerson = (id: number) => {
-  return async (dispatch: Dispatch<PersonAction>) => {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: PersonActionTypes.CLEAR_MESSAGE });
+    dispatch({ type: PersonActionTypes.CLEAR_ERRORS });
+
     try {
       const response = await axios.delete(
         `http://localhost:5000/api/v1/person/${id}`
@@ -152,26 +171,23 @@ export const deletePerson = (id: number) => {
         payload: id,
       });
 
+      dispatch({
+        type: PersonActionTypes.SET_TOAST_MESSAGE,
+        payload: "Пользователь успешно удален!",
+      });
     } catch (e: unknown) {
+      dispatch({
+        type: PersonActionTypes.GET_PERSONS_ERROR,
+        payload: "Ошибка при удалении пользователя!",
+      });
+
       if (typeof e === "string") {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e,
-        });
+        throw new Error(e);
       }
 
       if (e instanceof Error) {
-        dispatch({
-          type: PersonActionTypes.GET_PERSONS_ERROR,
-          payload: e.message,
-        });
+        throw new Error(e.message);
       }
     }
-  };
-};
-
-export const setLoading = (loading: boolean) => {
-  return (dispatch: Dispatch<PersonAction>) => {
-    dispatch({ type: PersonActionTypes.SET_LOADING, payload: loading });
   };
 };

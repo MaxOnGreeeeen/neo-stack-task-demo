@@ -1,11 +1,12 @@
 export interface PersonState {
   persons: Person[] | any[];
   loading: boolean;
-  error?: string;
+  error: string;
   page: number;
   limit: number;
   pagesQuantity: number;
   personsTotalQuantity: number;
+  toastMessage: string;
 }
 export interface Person {
   id: number | null;
@@ -23,6 +24,9 @@ export enum PersonActionTypes {
   SET_PERSONS_PAGE = "SET_PERSONS_PAGE",
   SET_PERSONS_PAGE_QUANTITY = "SET_PERSONS_PAGE_QUANTITY",
   SET_TOTAL_PERSONS_QUANTITY = "SET_TOTAL_PERSONS_QUANTITY",
+  CLEAR_ERRORS = "CLEAR_ERRORS",
+  SET_TOAST_MESSAGE = "SET_TOAST_MESSAGE",
+  CLEAR_MESSAGE = "CLEAR_MESSAGE",
 }
 
 export interface GetPersons {
@@ -77,6 +81,19 @@ export interface SetPersonsTotalQuantity {
   type: PersonActionTypes.SET_TOTAL_PERSONS_QUANTITY;
   payload: number;
 }
+
+export interface ClearErrors {
+  type: PersonActionTypes.CLEAR_ERRORS;
+}
+
+export interface SetMessage {
+  type: PersonActionTypes.SET_TOAST_MESSAGE;
+  payload: string;
+}
+
+export interface ClearMessage {
+  type: PersonActionTypes.CLEAR_MESSAGE;
+}
 export type PersonAction =
   | GetPersons
   | EditPerson
@@ -87,4 +104,7 @@ export type PersonAction =
   | SetLoading
   | SetPersonsPage
   | SetPageQuantity
-  | SetPersonsTotalQuantity;
+  | SetPersonsTotalQuantity
+  | ClearErrors
+  | SetMessage
+  | ClearMessage;
