@@ -16,6 +16,12 @@ export const createToast = (
         message: message,
       },
     });
+    setTimeout(() => {
+      dispatch({
+        type: ToastsActionTypes.DELETE_TOAST,
+        payload: id,
+      });
+    }, 5000);
   };
 };
 

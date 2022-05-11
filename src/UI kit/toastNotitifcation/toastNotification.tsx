@@ -77,6 +77,7 @@ const ToastNotification: React.FC<ToastProps> = ({ variant, message, id }) => {
       <div className={classes.contentBlock}>
         <h3>{getStringMessageValue(variant)}</h3>
         <p>{message}</p>
+        <div className={classes.notificationLoader}></div>
       </div>
     </div>
   );

@@ -52,6 +52,23 @@
       font-family: Montserrat-Medium;
     }
   }
+  .notificationLoader {
+    width: 100%;
+    height: 10px;
+    background: $main-bg-color;
+    margin: 10px 0;
+    border-radius: $block-border-radius;
+    animation: loading 5s ease-in-out forwards;
+  }
+}
+
+@keyframes loading {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
 }
 
 @keyframes toast-from-right {
