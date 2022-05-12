@@ -14,7 +14,7 @@ export enum ButtonTypes {
   submit = "submit",
 }
 
-interface ButtonProps {
+interface IProps {
   onClick?: (e: React.MouseEvent) => void | undefined;
   children: string | number | ReactNode;
   variant: ButtonVariant | null;
@@ -24,7 +24,7 @@ interface ButtonProps {
   type?: ButtonTypes;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<IProps> = ({
   onClick,
   children,
   variant,

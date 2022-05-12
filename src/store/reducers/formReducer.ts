@@ -1,13 +1,31 @@
-import { FormActionType, FormActions, FormState } from "../../types/form";
+import {
+  FormActions,
+  FormActionType,
+  FormState,
+  FormTypes,
+} from "../../types/form";
 
 const initialState: FormState = {
-  activeCreate: false,
-  activeEdit: false,
-  person: undefined,
-  id: 0,
-  name: "",
-  lastName: "",
-  disabled: true,
+  forms: [
+    {
+      type: FormTypes.CREATE,
+      name: "",
+      id: null,
+      lastName: "",
+      active: false,
+      person: undefined,
+      disabled: false,
+    },
+    {
+      type: FormTypes.EDIT,
+      name: "",
+      id: 0,
+      lastName: "",
+      active: false,
+      person: undefined,
+      disabled: false,
+    },
+  ],
 };
 
 export const formReducer = (
@@ -18,42 +36,63 @@ export const formReducer = (
     case FormActionType.SET_PERSON_EDIT:
       return {
         ...state,
-        id: action.payload.id,
-        name: action.payload.name,
-        lastName: action.payload.lastName,
-        person: action.payload,
+        forms: state.forms.map((form) => {
+          return form.type === FormTypes.EDIT
+            ? {
+                ...form,
+                person: action.payload,
+                id: action.payload.id,
+                name: action.payload.name,
+                lastName: action.payload.lastName,
+              }
+            : form;
+        }),
       };
+
     case FormActionType.EDIT_PERSON_NAME:
       return {
         ...state,
-        name: action.payload,
+        forms: state.forms.map((form) => {
+          return form.type === action.payload.type
+            ? { ...form, name: action.payload.name }
+            : form;
+        }),
       };
 
     case FormActionType.EDIT_PERSON_LASTNAME:
       return {
         ...state,
-        lastName: action.payload,
+        forms: state.forms.map((form) => {
+          return form.type === action.payload.type
+            ? { ...form, lastName: action.payload.lastName }
+            : form;
+        }),
       };
 
-    case FormActionType.SET_MODAL_EDIT_ACTIVE:
+    case FormActionType.SET_ACTIVE:
       return {
         ...state,
-        activeEdit: action.payload,
-      };
-
-    case FormActionType.SET_MODAL_CREATE_ACTIVE:
-      return {
-        ...state,
-        activeCreate: action.payload,
+        forms: state.forms.map((form) => {
+          return form.type === action.payload.type
+            ? { ...form, active: action.payload.active }
+            : form;
+        }),
       };
 
     case FormActionType.CLEAR_FORM_DATA:
       return {
         ...state,
-        person: undefined,
-        name: "",
-        lastName: "",
-        id: null,
+        forms: state.forms.map((form) => {
+          return {
+            ...form,
+            person: undefined,
+            id: null,
+            name: "",
+            lastName: "",
+            active: false,
+            disabled: false,
+          };
+        }),
       };
     default:
       return state;

@@ -1,13 +1,15 @@
 import {
   ConfirmActions,
   ConfirmActionTypes,
+  ConfirmFormTypes,
   ConfirmState,
 } from "../../types/confirm";
 
 const initialState: ConfirmState = {
-  activeEditDialog: false,
-  activeCreateDialog: false,
-  message: "",
+  confirmForms: [
+    { type: ConfirmFormTypes.CREATE, message: "", active: false },
+    { type: ConfirmFormTypes.EDIT, message: "", active: false },
+  ],
 };
 
 export const confirmReducer = (
@@ -18,40 +20,41 @@ export const confirmReducer = (
     case ConfirmActionTypes.SET_MESSAGE:
       return {
         ...state,
-        message: action.payload,
+        confirmForms: state.confirmForms.map((confirmForm) => {
+          return confirmForm.type === action.payload.type
+            ? { ...confirmForm, message: action.payload.message }
+            : confirmForm;
+        }),
       };
 
-    case ConfirmActionTypes.CONFIRM_EDIT_ACTION:
+    case ConfirmActionTypes.CONFIRM_ACTION:
       return {
         ...state,
-        activeEditDialog: false,
-        message: "",
-      };
-    case ConfirmActionTypes.CONFIRM_CREATE_ACTION:
-      return {
-        ...state,
-        activeCreateDialog: false,
-        message: "",
+        confirmForms: state.confirmForms.map((confirmForm) => {
+          return confirmForm.type === action.payload
+            ? { ...confirmForm, message: "", active: false }
+            : confirmForm;
+        }),
       };
 
-    case ConfirmActionTypes.SET_CREATE_DIALOG_VISIBLE:
+    case ConfirmActionTypes.SET_DIALOG_VISIBLE:
       return {
         ...state,
-        activeCreateDialog: action.payload,
-      };
-
-    case ConfirmActionTypes.SET_EDIT_DIALOG_VISIBLE:
-      return {
-        ...state,
-        activeEditDialog: action.payload,
+        confirmForms: state.confirmForms.map((confirmForm) => {
+          return confirmForm.type === action.payload.type
+            ? { ...confirmForm, active: action.payload.active }
+            : confirmForm;
+        }),
       };
 
     case ConfirmActionTypes.DISPROVE_ACTION:
       return {
         ...state,
-        activeCreateDialog: false,
-        activeEditDialog: false,
-        message: "",
+        confirmForms: state.confirmForms.map((confirmForm) => {
+          return confirmForm.type === action.payload
+            ? { ...confirmForm, message: "", active: false }
+            : confirmForm;
+        }),
       };
 
     default:

@@ -1,5 +1,5 @@
 import PersonCard from "./PersonCard";
 import Dialog from "./Dialog";
-import CreateEditPersonForm from "./CreateEditPersonForm";
+import PersonForm from "./CreateEditPersonForm";
 
-export { PersonCard, Dialog, CreateEditPersonForm };
+export { PersonCard, Dialog, PersonForm };

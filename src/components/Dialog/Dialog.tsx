@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import Button, { ButtonVariant } from "../../UI kit/button/button";
 
@@ -6,34 +6,52 @@ import closeIcon from "../../assets/static/icons/closeIcon.svg";
 
 import classes from "./dialog.module.scss";
 
-interface DialogProps {
-  active: boolean;
+interface IProps {
+  open: boolean;
   children: ReactNode | undefined;
   onClose: (e: React.MouseEvent) => void;
   title?: string;
   overwrite?: boolean;
 }
 
-const Dialog: React.FC<DialogProps> = ({
-  active,
+const Dialog: React.FC<IProps> = ({
+  open,
   children,
   onClose,
   title,
   overwrite,
-}) => {
+}): JSX.Element | null => {
+  useEffect(() => {
+    if (open) {
+      setIsReadyToAnimate(true);
+    }
+
+    if (!open) {
+      setIsReadyToAnimate(false);
+    }
+  }, [open]);
+
+  const [isReadyToAnimate, setIsReadyToAnimate] = useState<boolean>(false);
+
   const handleOnContentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
+  if (!open) {
+    return null;
+  }
+
   return (
     <div
-      className={active ? `${classes.modal} ${classes.active}` : classes.modal}
+      className={
+        isReadyToAnimate ? `${classes.modal} ${classes.active}` : classes.modal
+      }
       onClick={onClose}
       style={{ zIndex: overwrite ? 1000 : 100 }}
     >
       <div
         className={
-          active
+          open
             ? `${classes.modalContent} ${classes.active}`
             : classes.modalContent
         }

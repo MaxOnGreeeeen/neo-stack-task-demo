@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 
-import { PersonCard, CreateEditPersonForm, Dialog } from "../../components";
+import { PersonForm, Dialog, PersonCard } from "../../components";
 
 import {
   Button,
@@ -15,7 +15,10 @@ import Pagination from "@mui/material/Pagination";
 
 import { ButtonVariant } from "../../UI kit/button/button";
 import { ToastVariants } from "../../UI kit/toastNotitifcation/toastNotification";
+
 import { Person } from "../../types/person";
+import { ConfirmFormTypes } from "../../types/confirm";
+import { FormTypes } from "../../types/form";
 
 import classes from "./personsList.module.scss";
 
@@ -29,14 +32,12 @@ const PersonsList: React.FC = () => {
     setModalVisibility,
     setPersonEdit,
     setMessage,
-    confirmCreateAction,
-    confirmEditAction,
-    setCreateDialogVisible,
-    setEditDialogVisible,
     disproveAction,
     clearFormData,
     setTotalPersonsAmount,
     createToast,
+    confirmAction,
+    setFormVisible,
   } = useActions();
 
   const {
@@ -50,19 +51,19 @@ const PersonsList: React.FC = () => {
     toastMessage,
   } = useTypedSelector((state) => state.persons);
 
-  const { message, activeCreateDialog, activeEditDialog } = useTypedSelector(
-    (state) => state.confirm
+  const { confirmForms } = useTypedSelector((state) => state.confirm);
+
+  const { forms } = useTypedSelector((state) => state.form);
+
+  const createForm = useTypedSelector((state) =>
+    state.form.forms.find((form) => form.type === FormTypes.CREATE)
+  );
+
+  const editForm = useTypedSelector((state) =>
+    state.form.forms.find((form) => form.type === FormTypes.EDIT)
   );
 
   const { toasts } = useTypedSelector((state) => state.toasts);
-
-  const {
-    activeEdit,
-    activeCreate,
-    name,
-    lastName,
-    id: personId,
-  } = useTypedSelector((state) => state.form);
 
   useEffect(() => {
     getPersons(page, limit);
@@ -93,12 +94,12 @@ const PersonsList: React.FC = () => {
   };
 
   const handleEditPerson = (person: Person) => {
-    setModalVisibility(true, "edit");
+    setModalVisibility(true, FormTypes.EDIT);
     setPersonEdit(person);
   };
 
   const handleCreatePerson = () => {
-    setModalVisibility(true, "create");
+    setModalVisibility(true, FormTypes.CREATE);
   };
 
   const handleDeletePerson = (person: Person) => {
@@ -108,58 +109,65 @@ const PersonsList: React.FC = () => {
   };
 
   const onModalCreateClose = () => {
-    setModalVisibility(false, "create");
+    setModalVisibility(false, FormTypes.CREATE);
     clearFormData();
   };
 
   const onModalEditClose = () => {
-    setModalVisibility(false, "edit");
+    setModalVisibility(false, FormTypes.EDIT);
     clearFormData();
   };
 
   const submitCreatePersonForm = () => {
-    setMessage("Подтвердить создание пользователя?");
-    setCreateDialogVisible(true);
+    setMessage("Подтвердить создание пользователя?", ConfirmFormTypes.CREATE);
+    setFormVisible(ConfirmFormTypes.CREATE, true);
   };
 
   const submitEditPersonForm = () => {
-    setMessage("Подтвердить сохранение изменений?");
-    setEditDialogVisible(true);
+    setMessage("Подтвердить сохранение изменений?", ConfirmFormTypes.EDIT);
+    setFormVisible(ConfirmFormTypes.EDIT, true);
   };
 
   const handleExitEditing = () => {
-    disproveAction();
+    disproveAction(ConfirmFormTypes.EDIT);
+  };
+
+  const handleExitCreating = () => {
+    disproveAction(ConfirmFormTypes.CREATE);
   };
 
   const handleConfirmEdit = () => {
-    confirmEditAction();
+    confirmAction(ConfirmFormTypes.EDIT);
 
-    const editedPerson: Person = {
-      id: personId,
-      name: name,
-      lastName: lastName,
-    };
+    if (editForm !== undefined) {
+      const editedPerson: Person = {
+        id: editForm.id,
+        name: editForm.name,
+        lastName: editForm.lastName,
+      };
 
-    setModalVisibility(false, "edit");
+      setModalVisibility(false, FormTypes.EDIT);
 
-    editPerson(editedPerson);
+      editPerson(editedPerson);
+    }
 
     clearFormData();
   };
 
   const handleConfirmCreating = () => {
-    confirmCreateAction();
+    confirmAction(ConfirmFormTypes.CREATE);
 
-    const createdPerson: Person = {
-      id: null,
-      name: name,
-      lastName: lastName,
-    };
+    if (createForm !== undefined) {
+      const createdPerson: Person = {
+        id: null,
+        name: createForm.name,
+        lastName: createForm.lastName,
+      };
+      setModalVisibility(false, FormTypes.CREATE);
 
-    setModalVisibility(false, "create");
-    createPerson(createdPerson);
-
-    setTotalPersonsAmount(personsTotalQuantity, 1, limit);
+      createPerson(createdPerson);
+      setTotalPersonsAmount(personsTotalQuantity, 1, limit);
+    }
 
     clearFormData();
   };
@@ -180,27 +188,78 @@ const PersonsList: React.FC = () => {
       <div className={classes.titleForCards}>
         <div className={classes.titleBlock}>
           <h1>Список сотрудников</h1>
-          <Dialog
-            active={activeCreateDialog}
-            onClose={handleExitEditing}
-            overwrite={true}
-          >
-            <ConfirmActionForm
-              message={message}
-              onConfirm={handleConfirmCreating}
-              onClose={handleExitEditing}
-            />
-          </Dialog>
-          <Dialog
-            active={activeCreate}
-            onClose={onModalCreateClose}
-            title={"Добавить сотрудника"}
-          >
-            <CreateEditPersonForm
-              buttonTitle={"сохранить"}
-              submitForm={submitCreatePersonForm}
-            />
-          </Dialog>
+          {confirmForms.map((confirmForm) => {
+            if (confirmForm.type === ConfirmFormTypes.CREATE) {
+              return (
+                <Dialog
+                  open={confirmForm.active}
+                  onClose={handleExitCreating}
+                  overwrite={true}
+                >
+                  <ConfirmActionForm
+                    message={confirmForm.message}
+                    onConfirm={handleConfirmCreating}
+                    onClose={handleExitEditing}
+                  />
+                </Dialog>
+              );
+            }
+
+            if (confirmForm.type === ConfirmFormTypes.EDIT) {
+              return (
+                <Dialog
+                  open={confirmForm.active}
+                  onClose={handleExitEditing}
+                  overwrite={true}
+                >
+                  <ConfirmActionForm
+                    message={confirmForm.message}
+                    onConfirm={handleConfirmEdit}
+                    onClose={handleExitEditing}
+                  />
+                </Dialog>
+              );
+            }
+          })}
+
+          {forms.map((form) => {
+            if (form.type === FormTypes.CREATE) {
+              return (
+                <Dialog
+                  open={form.active}
+                  onClose={onModalCreateClose}
+                  title={"Добавить сотрудника"}
+                >
+                  <PersonForm
+                    name={form.name}
+                    lastName={form.lastName}
+                    type={form.type}
+                    buttonTitle={"сохранить"}
+                    submitForm={submitCreatePersonForm}
+                  />
+                </Dialog>
+              );
+            }
+
+            if (form.type === FormTypes.EDIT) {
+              return (
+                <Dialog
+                  open={form.active}
+                  onClose={onModalEditClose}
+                  title={"Редактировать сотрудника"}
+                >
+                  <PersonForm
+                    name={form.name}
+                    lastName={form.lastName}
+                    type={form.type}
+                    buttonTitle={"сохранить "}
+                    submitForm={submitEditPersonForm}
+                  />
+                </Dialog>
+              );
+            }
+          })}
+
           <Button onClick={handleCreatePerson} variant={ButtonVariant.submit}>
             {"Добавить сотрудника"}
           </Button>
@@ -213,27 +272,6 @@ const PersonsList: React.FC = () => {
         </div>
         <hr />
       </div>
-      <Dialog
-        active={activeEditDialog}
-        onClose={handleExitEditing}
-        overwrite={true}
-      >
-        <ConfirmActionForm
-          message={message}
-          onConfirm={handleConfirmEdit}
-          onClose={handleExitEditing}
-        />
-      </Dialog>
-      <Dialog
-        active={activeEdit}
-        onClose={onModalEditClose}
-        title={"Редактировать сотрудника"}
-      >
-        <CreateEditPersonForm
-          buttonTitle={"сохранить "}
-          submitForm={submitEditPersonForm}
-        />
-      </Dialog>
 
       {loading ? <Preloader /> : Persons}
 

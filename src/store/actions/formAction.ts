@@ -1,8 +1,7 @@
 import { Dispatch } from "redux";
 
-import { FormActions, FormActionType } from "../../types/form";
+import { FormActions, FormActionType, FormTypes } from "../../types/form";
 import { Person } from "../../types/person";
-import { setCreateDialogVisible, setEditDialogVisible } from "./confirmAction";
 
 export const setPersonEdit = (person: Person) => {
   return (dispatch: Dispatch<FormActions>) => {
@@ -10,40 +9,35 @@ export const setPersonEdit = (person: Person) => {
   };
 };
 
-export const editPersonName = (name: string) => {
+export const editPersonName = (type: FormTypes, name: string) => {
   return (dispatch: Dispatch<FormActions>) => {
-    dispatch({ type: FormActionType.EDIT_PERSON_NAME, payload: name });
+    dispatch({
+      type: FormActionType.EDIT_PERSON_NAME,
+      payload: { type: type, name: name },
+    });
   };
 };
 
-export const setModalVisibility = (active: boolean, type: string) => {
+export const editPersonLastname = (type: FormTypes, lastName: string) => {
   return (dispatch: Dispatch<FormActions>) => {
-    switch (type) {
-      case "create":
-        return dispatch({
-          type: FormActionType.SET_MODAL_CREATE_ACTIVE,
-          payload: active,
-        });
-
-      case "edit":
-        return dispatch({
-          type: FormActionType.SET_MODAL_EDIT_ACTIVE,
-          payload: active,
-        });
-    }
+    dispatch({
+      type: FormActionType.EDIT_PERSON_LASTNAME,
+      payload: { type: type, lastName: lastName },
+    });
   };
 };
 
-export const editPersonLastname = (lastName: string) => {
+export const setModalVisibility = (active: boolean, type: FormTypes) => {
   return (dispatch: Dispatch<FormActions>) => {
-    dispatch({ type: FormActionType.EDIT_PERSON_LASTNAME, payload: lastName });
+    dispatch({
+      type: FormActionType.SET_ACTIVE,
+      payload: { type: type, active: active },
+    });
   };
 };
 
 export const clearFormData = () => {
   return (dispatch: Dispatch<FormActions>) => {
     dispatch({ type: FormActionType.CLEAR_FORM_DATA });
-    setEditDialogVisible(false);
-    setCreateDialogVisible(false);
   };
 };

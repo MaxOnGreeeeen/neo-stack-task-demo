@@ -1,49 +1,48 @@
 export interface ConfirmState {
-  activeCreateDialog: boolean;
-  activeEditDialog: boolean;
+  confirmForms: ConfirmForm[];
+}
+
+export interface ConfirmForm {
+  type: ConfirmFormTypes;
+  active: boolean;
   message: string;
+}
+
+export enum ConfirmFormTypes {
+  EDIT = "EDIT",
+  CREATE = "CREATE",
+  DELETE = "DELETE",
 }
 
 export enum ConfirmActionTypes {
   SET_MESSAGE = "SET_MESSAGE",
-  CONFIRM_CREATE_ACTION = "CONFIRM_CREATE_ACTION",
-  CONFIRM_EDIT_ACTION = "CONFIRM_EDIT_ACTION",
+  CONFIRM_ACTION = "CONFIRM_ACTION",
   DISPROVE_ACTION = "DISPROVE_ACTION",
-  SET_CREATE_DIALOG_VISIBLE = "SET_CREATE_DIALOG_VISIBLE",
-  SET_EDIT_DIALOG_VISIBLE = "SET_EDIT_DIALOG_VISIBLE",
+  SET_DIALOG_VISIBLE = "SET_DIALOG_VISIBLE",
 }
 
 export interface SetMessage {
   type: ConfirmActionTypes.SET_MESSAGE;
-  payload: string;
+  payload: { type: ConfirmFormTypes; message: string };
 }
 
-export interface SetCreateDialogVisible {
-  type: ConfirmActionTypes.SET_CREATE_DIALOG_VISIBLE;
-  payload: boolean;
+export interface SetDialogVisible {
+  type: ConfirmActionTypes.SET_DIALOG_VISIBLE;
+  payload: { type: ConfirmFormTypes; active: boolean };
 }
 
-export interface SetEditDialogVisible {
-  type: ConfirmActionTypes.SET_EDIT_DIALOG_VISIBLE;
-  payload: boolean;
-}
-
-export interface ConfirmCreateAction {
-  type: ConfirmActionTypes.CONFIRM_CREATE_ACTION;
-}
-
-export interface ConfirmEditAction {
-  type: ConfirmActionTypes.CONFIRM_EDIT_ACTION;
+export interface ConfirmAction {
+  type: ConfirmActionTypes.CONFIRM_ACTION;
+  payload: ConfirmFormTypes;
 }
 
 export interface DisproveAction {
   type: ConfirmActionTypes.DISPROVE_ACTION;
+  payload: ConfirmFormTypes;
 }
 
 export type ConfirmActions =
   | SetMessage
-  | ConfirmCreateAction
-  | ConfirmEditAction
   | DisproveAction
-  | SetCreateDialogVisible
-  | SetEditDialogVisible;
+  | SetDialogVisible
+  | ConfirmAction;

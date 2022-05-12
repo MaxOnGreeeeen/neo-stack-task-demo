@@ -40,14 +40,6 @@ export const getPersons = (page: number, limit: number) => {
         type: PersonActionTypes.GET_PERSONS_ERROR,
         payload: "Ошибка при загрузке пользователей!",
       });
-
-      if (typeof e === "string") {
-        throw new Error(e);
-      }
-
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
     }
   };
 };
@@ -105,14 +97,6 @@ export const editPerson = (person: Person) => {
         type: PersonActionTypes.GET_PERSONS_ERROR,
         payload: "Ошибка при попытке редактирования!",
       });
-
-      if (typeof e === "string") {
-        throw new Error(e);
-      }
-
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
     }
   };
 };
@@ -144,14 +128,6 @@ export const createPerson = (person: Person) => {
         type: PersonActionTypes.GET_PERSONS_ERROR,
         payload: "Ошибка при создании пользователя!",
       });
-
-      if (typeof e === "string") {
-        throw new Error(e);
-      }
-
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
     }
   };
 };
@@ -180,14 +156,6 @@ export const deletePerson = (id: number) => {
         type: PersonActionTypes.GET_PERSONS_ERROR,
         payload: "Ошибка при удалении пользователя!",
       });
-
-      if (typeof e === "string") {
-        throw new Error(e);
-      }
-
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
     }
   };
 };

@@ -7,7 +7,7 @@ export enum InputTypes {
   text = "text",
 }
 
-interface InputProps {
+interface IProps {
   onChange: (e: { target: HTMLInputElement }) => void;
   placeHolder: string;
   error: boolean;
@@ -17,7 +17,7 @@ interface InputProps {
   value?: string;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input: React.FC<IProps> = ({
   onChange,
   placeHolder,
   error,
@@ -35,7 +35,7 @@ const Input: React.FC<InputProps> = ({
         className={classes.inputField}
         name={name}
         value={value}
-      ></input>
+      />
       <label className={error ? classes.errorMessage : classes.disabledLabel}>
         <div className={classes.errorEmpty}>
           {error ? <span>{errorMessage}</span> : <div />}

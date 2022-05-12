@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 
 import { Utils } from "../../helpers/Utils";
@@ -10,19 +9,25 @@ import { Button, Input } from "../../UI kit";
 import { ButtonTypes, ButtonVariant } from "../../UI kit/button/button";
 import { InputTypes } from "../../UI kit/input/input";
 
+import { FormTypes } from "../../types/form";
+
 import classes from "./createPersonForm.module.scss";
 
-interface CreatePersonFormProps {
+interface IProps {
   submitForm: () => void;
   buttonTitle: string;
+  type: FormTypes;
+  name: string;
+  lastName: string;
 }
 
-const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
+const PersonForm: React.FC<IProps> = ({
+  type,
   submitForm,
   buttonTitle,
+  name,
+  lastName,
 }) => {
-  const { name, lastName } = useTypedSelector((state) => state.form);
-
   useEffect(() => {
     validateFields(name, lastName);
   }, [name, lastName]);
@@ -39,11 +44,11 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
     useState<boolean>(false);
 
   const onChangeNameFieldHandler = (e: { target: HTMLInputElement }) => {
-    editPersonName(e.target.value);
+    editPersonName(type, e.target.value);
   };
 
   const onChangeLastnameFieldHandler = (e: { target: HTMLInputElement }) => {
-    editPersonLastname(e.target.value);
+    editPersonLastname(type, e.target.value);
   };
 
   const submitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -120,4 +125,4 @@ const CreateEditPersonForm: React.FC<CreatePersonFormProps> = ({
   );
 };
 
-export default CreateEditPersonForm;
+export default PersonForm;

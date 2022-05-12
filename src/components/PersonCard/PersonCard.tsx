@@ -9,13 +9,13 @@ import editIcon from "../../assets/static/icons/editIcon.svg";
 
 import classes from "./personCard.module.scss";
 
-interface PersonCardProps {
+interface IProps {
   person: Person;
   deleteHandler: (person: Person) => void;
   editHandler: (person: Person) => void;
 }
 
-const PersonCard: React.FC<PersonCardProps> = ({
+const PersonCard: React.FC<IProps> = ({
   person,
   deleteHandler,
   editHandler,

@@ -5,13 +5,13 @@ import { ButtonVariant } from "../button/button";
 
 import classes from "./confirmActionForm.module.scss";
 
-interface ConfirmFormProps {
+interface IProps {
   message: string;
   onConfirm: () => void;
   onClose: () => void;
 }
 
-const ConfirmActionForm: React.FC<ConfirmFormProps> = ({
+const ConfirmActionForm: React.FC<IProps> = ({
   message,
   onConfirm,
   onClose,

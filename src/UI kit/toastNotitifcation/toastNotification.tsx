@@ -8,13 +8,13 @@ import { ButtonVariant } from "../button/button";
 import classes from "./toastNotification.module.scss";
 
 export enum ToastVariants {
-  warning = "предупреждение",
-  success = "успешно",
-  info = "уведомление",
-  error = "ошибка",
+  warning = "warning",
+  success = "success",
+  info = "info",
+  error = "error",
 }
 
-interface ToastProps {
+interface IProps {
   active?: boolean;
   variant: ToastVariants;
   message: string;
@@ -26,7 +26,7 @@ export interface MatchesTypes {
   name: string;
 }
 
-const ToastNotification: React.FC<ToastProps> = ({ variant, message, id }) => {
+const ToastNotification: React.FC<IProps> = ({ variant, message, id }) => {
   const { deleteToast } = useActions();
 
   const notificationMatches: Array<MatchesTypes> = [
@@ -59,23 +59,13 @@ const ToastNotification: React.FC<ToastProps> = ({ variant, message, id }) => {
     deleteToast(id);
   };
 
-  const getStringMessageValue = (variant: ToastVariants): string => {
-    let notification: string = "";
-
-    notificationMatches.every((match) => {
-      if (match.code === variant) {
-        notification = match.name;
-      }
-    });
-    return notification;
-  };
   return (
     <div className={switchClassname(variant)} onClick={handleDeleteToast}>
       <Button variant={ButtonVariant.rounded} onClick={handleDeleteToast}>
         X
       </Button>
       <div className={classes.contentBlock}>
-        <h3>{getStringMessageValue(variant)}</h3>
+        <h3>{notificationMatches.find(item => item.code === variant)?.name || ''}</h3>
         <p>{message}</p>
         <div className={classes.notificationLoader} />
       </div>
